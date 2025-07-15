@@ -2,81 +2,18 @@
   "name": "rm-manifest-tool-beta",
   "version": "1.0.0",
   "description": "Ferramenta para manipulação de manifests Steam",
+  "productName": "RM MANIFEST TOOL",
+  "productNameExt": "rm-manifest-tool-beta",
   "main": "main.js",
   "author": "Renildo Marcio <renildomrc@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/psycodeliccircus/rm-manifest-tool-beta.git"
   },
-  "build": {
-    "appId": "com.rm.manifest.tool.beta",
-    "productName": "RM MANIFEST TOOL",
-    "productNameExt": "rm-manifest-tool-beta",
-    "copyright": "Copyright © 2025 RM MANIFEST TOOL Desenvolvido por: Renildo Marcio",
-    "directories": {
-      "output": "dist"
-    },
-    "files": [
-      "**/*",
-      "!dist",
-      "!*.md",
-      "!LICENSE",
-      "!test/",
-      "!tests/"
-    ],
-    "asar": true,
-    "extraResources": [
-      {
-        "from": "icons/",
-        "to": "icons",
-        "filter": ["**/*"]
-      }
-    ],
-    "win": {
-      "icon": "icons/icon.png",
-      "target": [
-        {
-          "target": "nsis",
-          "arch": ["x64", "ia32"]
-        }
-      ],
-      "artifactName": "${productNameExt}-Setup-${version}.${ext}"
-    },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "RM MANIFEST TOOL"
-    },
-    "mac": {
-      "icon": "icons/icon.icns",
-      "category": "public.app-category.utilities",
-      "target": ["dmg", "zip"]
-    },
-    "dmg": {
-      "background": "icons/dmg-bg.png",
-      "icon": "icons/icon.icns",
-      "artifactName": "${productNameExt}-${version}-mac.${ext}"
-    },
-    "linux": {
-      "icon": "icons",
-      "target": ["AppImage", "deb"],
-      "category": "Utility"
-    },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "psycodeliccircus",
-        "repo": "rm-manifest-tool-beta"
-      }
-    ],
-    "artifactName": "${productNameExt}-${version}-${os}-${arch}.${ext}"
-  },
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder"
+    "icon": "node build.js --icon=https://chevereto.renildomarcio.com.br/images/2025/07/08/4f448544fdf7fb513eb6c5e87de57cd4.png",
+    "build": "node build.js --build"
   },
   "devDependencies": {
     "electron": "^37.2.1",
@@ -84,6 +21,10 @@
   },
   "dependencies": {
     "adm-zip": "^0.5.16",
-    "electron-updater": "^6.6.2"
+    "electron-updater": "^6.6.2",
+    "fs-extra": "^11.3.0",
+    "jimp": "^0.22.12",
+    "node-fetch": "^2.6.7",
+    "png2icons": "^2.0.0"
   }
 }

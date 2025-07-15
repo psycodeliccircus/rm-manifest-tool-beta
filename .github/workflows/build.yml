@@ -8,15 +8,19 @@ on:
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    outputs:
+      tag_created: ${{ steps.create_release.outputs.release_created }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install jq
         run: sudo apt-get install jq
 
       - name: Get version
-        run: echo "version=$(jq -r .version package.json)" >> $GITHUB_ENV
+        id: get_version
+        run: |
+          echo "version=$(jq -r .version package.json)" >> $GITHUB_ENV
 
       - name: Check if tag exists
         id: tag_check
@@ -30,14 +34,14 @@ jobs:
       - name: Create Release
         if: steps.tag_check.outputs.exists == 'false'
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.version }}
-          release_name: RM Manifest Generator Beta V${{ env.version }}
+          name: RM Manifest Generator Beta V${{ env.version }}
           draft: false
           prerelease: ${{ contains(env.version, 'beta') || contains(env.version, 'alpha') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-launcher:
     needs: create-release
@@ -48,17 +52,17 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
 
-      - name: Install Dependencies
-        run: npm ci
+      - name: Install dependencies
+        run: npm install
 
       - name: Build and Publish
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: npx electron-builder --publish always
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run dist

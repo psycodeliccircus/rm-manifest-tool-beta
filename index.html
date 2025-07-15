@@ -9,15 +9,20 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="background-frost"></div>
   <div class="app-container">
     <div class="app-title">
-      RM MANIFEST TOOL <span style="color:#4be5e2; font-size:0.99rem; letter-spacing:0.5px; margin-left:4px; background:#173245; padding:2px 7px 2px 7px; border-radius:8px;">OPEN BETA</span>
+      <span class="app-logo">
+        <img src="icons/icon.png" alt="Logo do app" class="logo-img">
+      </span>
+      RM MANIFEST TOOL 
+      <span class="badge-beta">OPEN BETA</span>
     </div>
     <div id="drm-warning">
       <i class="fa-solid fa-exclamation-triangle me-2"></i> Este AppID possui proteção DRM.
     </div>
     <div class="mb-3 position-relative">
-      <input id="appid" type="text" class="form-control" autocomplete="off" placeholder="Enter Steam App ID ou nome do jogo">
+      <input id="appid" type="text" class="form-control" autocomplete="off" placeholder="Digite Steam App ID ou nome do jogo">
       <div id="appid-dropdown"></div>
     </div>
     <div id="branch-selector" class="mb-2" style="display:none;">
@@ -36,47 +41,45 @@
     </div>
     <div class="d-flex gap-3 mb-3 button-group">
       <button class="btn btn-add flex-fill" onclick="baixarExtrairECopiar()"><i class="fa-solid fa-plus"></i> ADD</button>
-      <button class="btn btn-remove flex-fill" onclick="setStatus('Removed!')"><i class="fa-solid fa-trash-can"></i> REMOVE</button>
+      <button class="btn btn-remove flex-fill" onclick="setStatus('Removed!')"><i class="fa-solid fa-trash-can"></i> REMOVER</button>
     </div>
-    <button class="btn btn-update w-100 mb-3" onclick="updateGame(event)">
+    <button class="btn btn-update w-100 mb-2" onclick="updateGame(event)">
       <i class="fas fa-sync"></i> ATUALIZAR TUDO
     </button>
-    <button class="btn btn-restart w-100 mb-3" onclick="restartSteam()">
-      <i class="fa-solid fa-power-off"></i> REINICIE STEAM
+    <button class="btn btn-restart w-100 mb-2" onclick="restartSteam()">
+      <i class="fa-solid fa-power-off"></i> REINICIAR STEAM
     </button>
-    <button class="btn btn-update w-100 mb-3" onclick="openRequests()">
-      <i class="fa-solid fa-headset"></i> PEDIR SUPORTE/REQUISIÇÃO
+    <button class="btn btn-update w-100 mb-2" onclick="openRequests()">
+      <i class="fa-solid fa-headset"></i> SUPORTE / REQUISIÇÃO
     </button>
-    <button class="btn btn-add w-100 mb-3" onclick="openFaq()">
+    <button class="btn btn-faq w-100 mb-2" onclick="openFaq()">
       <i class="fa-solid fa-circle-question"></i> FAQ / DÚVIDAS FREQUENTES
     </button>
-
-    <!--<div id="status" class="footer-ready"></div>-->
     <div class="location-box">
-        <div class="location-row mb-3">
-            <span class="location-label">
-            <i class="fa-solid fa-code-branch"></i>
-            LOCALIZAÇÃO .ST/.LUA
-            </span>
-            <div class="location-input-group">
-            <input type="text" id="luaLocation" class="form-control location-input" readonly>
-            <button class="choose-btn" title="Selecionar pasta" onclick="chooseLocation('lua')">
-                <i class="fa-solid fa-folder-open"></i>
-            </button>
-            </div>
+      <div class="location-row mb-3">
+        <span class="location-label">
+          <i class="fa-solid fa-code-branch"></i>
+          LOCALIZAÇÃO .ST/.LUA
+        </span>
+        <div class="location-input-group">
+          <input type="text" id="luaLocation" class="form-control location-input" readonly>
+          <button class="choose-btn" title="Selecionar pasta" onclick="chooseLocation('lua')">
+            <i class="fa-solid fa-folder-open"></i>
+          </button>
         </div>
-        <div class="location-row">
-            <span class="location-label">
-            <i class="fa-solid fa-file-lines"></i>
-            LOCALIZAÇÃO DO .MANIFEST
-            </span>
-            <div class="location-input-group">
-            <input type="text" id="manifestLocation" class="form-control location-input" readonly>
-            <button class="choose-btn" title="Selecionar pasta" onclick="chooseLocation('manifest')">
-                <i class="fa-solid fa-folder-open"></i>
-            </button>
-            </div>
+      </div>
+      <div class="location-row">
+        <span class="location-label">
+          <i class="fa-solid fa-file-lines"></i>
+          LOCALIZAÇÃO DO .MANIFEST
+        </span>
+        <div class="location-input-group">
+          <input type="text" id="manifestLocation" class="form-control location-input" readonly>
+          <button class="choose-btn" title="Selecionar pasta" onclick="chooseLocation('manifest')">
+            <i class="fa-solid fa-folder-open"></i>
+          </button>
         </div>
+      </div>
     </div>
   </div>
   <div id="alert-container"></div>

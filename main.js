@@ -18,7 +18,7 @@ function createWindow() {
     minHeight: 300,
     frame: false,
     resizable: true,
-    transparent: false,
+    transparent: true,
     alwaysOnTop: true,
     show: true,
     center: true,
@@ -85,31 +85,31 @@ function startAutoUpdate() {
   autoUpdater.autoDownload = true;
 
   autoUpdater.on('checking-for-update', () => {
-    if (splashWindow) splashWindow.webContents.send('splash-status', 'Verificando atualizações...');
+    if (splashWindow) splashWindow.webContents.send('progressText', 'Verificando atualizações...');
   });
   autoUpdater.on('update-available', () => {
-    if (splashWindow) splashWindow.webContents.send('splash-status', 'Atualização disponível! Baixando...');
+    if (splashWindow) splashWindow.webContents.send('progressText', 'Atualização disponível! Baixando...');
   });
   autoUpdater.on('update-not-available', () => {
-    if (splashWindow) splashWindow.webContents.send('splash-status', 'Nenhuma atualização encontrada.');
+    if (splashWindow) splashWindow.webContents.send('progressText', 'Nenhuma atualização encontrada.');
     setTimeout(() => {
       showMainWindow();
     }, 1200);
   });
   autoUpdater.on('download-progress', (progress) => {
     if (splashWindow) {
-      splashWindow.webContents.send('splash-progress', Math.floor(progress.percent));
-      splashWindow.webContents.send('splash-status', `Baixando atualização: ${Math.floor(progress.percent)}%`);
+      splashWindow.webContents.send('progressBar', Math.floor(progress.percent));
+      splashWindow.webContents.send('progressText', `Baixando atualização: ${Math.floor(progress.percent)}%`);
     }
   });
   autoUpdater.on('update-downloaded', () => {
-    if (splashWindow) splashWindow.webContents.send('splash-status', 'Atualização baixada. Instalando...');
+    if (splashWindow) splashWindow.webContents.send('progressText', 'Atualização baixada. Instalando...');
     setTimeout(() => {
       autoUpdater.quitAndInstall();
     }, 1200);
   });
   autoUpdater.on('error', (err) => {
-    if (splashWindow) splashWindow.webContents.send('splash-status', 'Erro ao atualizar. Abrindo app...');
+    if (splashWindow) splashWindow.webContents.send('progressText', 'Erro ao atualizar. Abrindo app...');
     setTimeout(() => {
       showMainWindow();
     }, 1600);

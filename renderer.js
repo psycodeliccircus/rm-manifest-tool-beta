@@ -383,8 +383,22 @@ function updateGame(event) {
       } else if (data.message === "updated") {
         setStatus("Jogo atualizado com sucesso", "success");
         fetchManifestInfo(appid);
-      } else if (data.message.includes("Não é possível atualizar automaticamente")) {
+      } else if (data.message && data.message.includes("Não é possível atualizar automaticamente")) {
         setStatus("Não é possível atualizar automaticamente, solicite uma atualização", "info");
+      } 
+      // NOVO: se vier uma mensagem HTML personalizada do backend, usa ela
+      else if (data.message_html) {
+        setStatus(data.message_html, "error");
+      }
+      // NOVO: se vier os dados estruturados, monta os botões personalizados
+      else if (data.site_url && data.discord_url) {
+        setStatus(
+          (data.message ? data.message.replace(/\n/g, '<br>') : "Informação disponível.") +
+          `<br><br>
+          <a href="${data.site_url}" target="_blank" class="btn btn-add">${data.site_label || 'Solicitar jogo'}</a>
+          <a href="${data.discord_url}" target="_blank" class="btn btn-add">${data.discord_label || 'Entrar no Discord'}</a>`,
+          "error"
+        );
       } else {
         setStatus(data.message || "Resposta desconhecida", "success");
       }

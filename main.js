@@ -14,8 +14,10 @@ function createWindow() {
   splashWindow = new BrowserWindow({
     width: 420,
     height: 340,
+    minWidth: 340,      // Evita quebrar
+    minHeight: 300,
     frame: false,
-    resizable: false,
+    resizable: true,
     transparent: false,
     alwaysOnTop: true,
     show: true,
@@ -44,7 +46,7 @@ function createWindow() {
 
 function showMainWindow() {
   mainWindow = new BrowserWindow({
-    width: 600,
+    width: 700,
     height: 820,
     resizable: false,
     icon: "icons/icon.png",
@@ -188,9 +190,11 @@ ipcMain.handle('baixar-extrair-copiar', async (event, { appid, branch, luaLocati
 ipcMain.handle('abrir-faq', () => {
   // Cria uma janela leve só para FAQ
   const faqWindow = new BrowserWindow({
-    width: 600,
-    height: 700,
+    width: 700,
+    height: 500,
     resizable: true,
+    frame: false,
+    transparent: true,
     minimizable: true,
     maximizable: false,
     modal: false,

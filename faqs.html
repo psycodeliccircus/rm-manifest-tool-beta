@@ -8,27 +8,92 @@
   <style>
     body {
       font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(120deg,#22354a,#18243c 85%);
-      color: #eafdf8;
+      background: transparent;
+      color: #fff;
       margin: 0;
       padding: 0;
       min-height: 100vh;
     }
-    .faq-container {
-      max-width: 680px;
-      margin: 36px auto;
-      background: #24394d;
-      border-radius: 18px;
-      box-shadow: 0 2px 22px #0002;
-      padding: 36px 24px 24px 24px;
+    html, body {
+      scrollbar-width: none;      /* Firefox */
+      -ms-overflow-style: none;   /* IE e Edge antigos */
     }
-    h1 {
-      text-align: center;
+    body::-webkit-scrollbar, html::-webkit-scrollbar {
+      display: none;              /* Chrome, Safari e Edge */
+    }
+    .faq-container {
+      max-width: 500px;
+      min-width: 0;
+      margin: 5vh auto 0 auto;
+      background: linear-gradient(120deg, #24394d 80%, #232b37cc 100%);
+      border-radius: 22px;
+      box-shadow: 0 2px 22px #21283e15;
+      padding: 34px 26px 22px 26px;
+      position: relative;
+    }
+    .faq-header {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 9px;
+      justify-content: center;
+    }
+    .app-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      background: linear-gradient(120deg,#4be5e2 30%,#223654 100%);
+      box-shadow: 0 0 18px #38fffc35, 0 2px 12px #23272f60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 7px;
+      overflow: hidden;
+    }
+    .app-logo img {
+      width: 29px;
+      height: 29px;
+      object-fit: contain;
+      border-radius: 7px;
+      background: transparent;
+      display: block;
+    }
+    .faq-title {
+      font-size: 1.24rem;
+      font-weight: 700;
+      letter-spacing: 1.3px;
+      color: #86e4cd;
+      text-shadow: 0 1px 5px #183a3680;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge-beta {
       color: #4be5e2;
-      font-size: 2.2rem;
-      margin-bottom: 16px;
-      letter-spacing: 2px;
-      text-shadow: 0 2px 18px #4be5e230;
+      font-size: 0.93rem;
+      letter-spacing: 0.5px;
+      background: #173245;
+      padding: 2px 8px;
+      border-radius: 8px;
+      margin-left: 10px;
+      font-weight: 600;
+    }
+    .close-btn {
+      position: absolute;
+      right: 19px;
+      top: 15px;
+      color: #b7b7b7;
+      font-size: 1.5rem;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      line-height: 1;
+      z-index: 10;
+      transition: color 0.17s;
+    }
+    .close-btn:hover { color: #ff6464; }
+    .faq-list {
+      margin-top: 13px;
     }
     .faq-item {
       margin-bottom: 18px;
@@ -36,24 +101,27 @@
       background: #213142;
       box-shadow: 0 1px 5px #0001;
       overflow: hidden;
-      transition: box-shadow 0.3s;
+      transition: box-shadow 0.3s, background 0.2s;
     }
     .faq-question {
-      padding: 18px;
+      width: 100%;
+      padding: 17px 18px;
       font-weight: 600;
       cursor: pointer;
-      font-size: 1.09rem;
+      font-size: 1.07rem;
       display: flex;
       align-items: center;
       gap: 10px;
       color: #87ede2;
-      background: linear-gradient(90deg,#2a495c 65%,#24394d 100%);
-      user-select: none;
+      background: linear-gradient(90deg,#2a495c 60%,#24394d 100%);
       border: none;
       outline: none;
+      user-select: none;
+      transition: background 0.17s, color 0.14s;
     }
     .faq-question:hover {
       background: #264158;
+      color: #4be5e2;
     }
     .faq-answer {
       max-height: 0;
@@ -61,107 +129,199 @@
       background: #1b2735;
       color: #eafdf8;
       padding: 0 18px;
-      transition: max-height 0.35s cubic-bezier(.23,.99,.53,1.25), padding 0.2s;
+      transition: max-height 0.34s cubic-bezier(.23,.99,.53,1.25), padding 0.18s;
       font-size: 1.02rem;
       opacity: 0.96;
     }
     .faq-item.open .faq-answer {
       max-height: 400px;
-      padding: 16px 18px;
+      padding: 15px 18px;
     }
     .faq-item.open .faq-question i {
       transform: rotate(90deg);
       color: #4be5e2;
     }
     .faq-question i {
-      transition: transform 0.25s;
-      font-size: 1.2em;
+      transition: transform 0.23s, color 0.18s;
+      font-size: 1.19em;
       color: #45cfc7;
     }
-    @media (max-width: 500px) {
-      .faq-container { padding: 18px 5px; }
-      h1 { font-size: 1.25rem; }
-      .faq-question { font-size: 0.99rem; padding: 12px 8px; }
+    .faq-answer a {
+      color: #4be5e2;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+    .faq-answer a:hover { color: #87ede2; }
+    ul, ol {
+      margin-left: 18px;
+      margin-top: 7px;
+      margin-bottom: 7px;
+      color: #a6f2e4;
+      font-size: 0.97em;
+    }
+    @media (max-width: 600px) {
+      .faq-container { padding: 12px 2vw 10px 2vw; max-width: 99vw; }
+      .faq-title { font-size: 1.04rem; }
+      .faq-question { font-size: 0.98rem; padding: 12px 8px; }
       .faq-answer { font-size: 0.98rem; }
+      .app-logo { width: 31px; height: 31px;}
+      .app-logo img { width: 22px; height: 22px;}
+      .close-btn { font-size: 1.25rem; right: 8px; top: 7px; }
     }
   </style>
 </head>
 <body>
   <div class="faq-container">
-    <h1><i class="fa-solid fa-circle-question"></i> FAQ - Dúvidas Frequentes</h1>
-    
-    <div class="faq-item">
-      <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> O que é o RM Manifest Tool?</button>
-      <div class="faq-answer">
-        É um aplicativo que facilita o download, organização e atualização de arquivos <b>.manifest</b> e <b>.lua</b> de jogos Steam de forma prática, automatizada e segura, diretamente do seu PC.
-      </div>
+    <button class="close-btn" onclick="window.close()" title="Fechar FAQ">&times;</button>
+    <div class="faq-header">
+      <span class="app-logo"><img src="icons/icon.png" alt="Logo do app"></span>
+      <span class="faq-title">RM MANIFEST TOOL <span class="badge-beta">OPEN BETA</span></span>
     </div>
-    
-    <div class="faq-item">
-      <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Como faço para baixar arquivos de um jogo?</button>
-      <div class="faq-answer">
-        Digite o <b>App ID</b> ou o nome do jogo na caixa de busca. Selecione o jogo desejado, escolha o branch (se houver) e clique em <b>ADD</b>. Os arquivos serão baixados e copiados automaticamente para as pastas configuradas.
-      </div>
+    <div style="text-align:center; color:#4be5e2; font-size:1.14rem; font-weight:600; margin-bottom:18px;">
+      <i class="fa-solid fa-circle-question"></i> FAQ / Dúvidas Frequentes
     </div>
-    
-    <div class="faq-item">
-      <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Como configuro as pastas de destino?</button>
-      <div class="faq-answer">
-        Utilize os botões de pasta ao lado dos campos “LOCALIZAÇÃO .ST/.LUA” e “LOCALIZAÇÃO DO .MANIFEST” para escolher onde os arquivos serão salvos. Se não configurar, os caminhos padrões da Steam serão usados.
-      </div>
-    </div>
-    
-    <div class="faq-item">
-      <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Por que recebo erro de download (404/Branch não encontrado)?</button>
-      <div class="faq-answer">
-        Isso geralmente acontece quando o AppID ou branch não possui arquivos disponíveis no servidor ou está incorreto. Verifique se o AppID está correto, se o jogo existe na Steam, ou se o branch escolhido realmente possui arquivos.
-      </div>
-    </div>
+    <div class="faq-list">
 
-    <div class="faq-item">
-      <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> O que significa “AppID possui proteção DRM”?</button>
-      <div class="faq-answer">
-        Alguns jogos utilizam DRM avançado e os arquivos <b>.manifest</b> podem não funcionar fora do cliente Steam ou podem ser criptografados. Nesses casos, o RM Manifest Tool alerta sobre possíveis restrições ou falhas no uso dos arquivos baixados.
+      <div class="faq-item">
+        <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> O que é o RM Manifest Tool e para que serve?</button>
+        <div class="faq-answer">
+          O RM Manifest Tool é um app para Windows/Linux/Mac que facilita o download e gerenciamento de arquivos <b>.manifest</b> e <b>.lua/.st</b> de jogos Steam. Ele automatiza tarefas como:
+          <ul>
+            <li>Buscar AppIDs e baixar rapidamente arquivos originais do Steam.</li>
+            <li>Salvar esses arquivos em pastas customizadas do seu PC.</li>
+            <li>Atualizar arquivos já baixados com um clique.</li>
+            <li>Facilitar a manipulação para projetos de tradução, mods, backups ou estudos.</li>
+          </ul>
+          Você não precisa usar comandos do SteamCMD nem procurar arquivos manualmente — o app faz tudo por você, com interface amigável!
+        </div>
       </div>
-    </div>
-    
-    <div class="faq-item">
-      <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Como atualizo o RM Manifest Tool?</button>
-      <div class="faq-answer">
-        O app verifica automaticamente por novas versões ao abrir. Caso haja atualização, o download e a instalação serão automáticos. Basta aguardar na tela de carregamento (splash).
-      </div>
-    </div>
-    
-    <div class="faq-item">
-      <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Como reinicio o Steam usando o app?</button>
-      <div class="faq-answer">
-        Clique no botão <b>REINICIE STEAM</b>. O app irá fechar e reabrir o Steam automaticamente, seja no Windows, Linux ou Mac. Se não funcionar, selecione manualmente o executável Steam.exe quando solicitado.
-      </div>
-    </div>
 
-    <div class="faq-item">
-      <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> O RM Manifest Tool é seguro?</button>
-      <div class="faq-answer">
-        Sim. O código é aberto e o aplicativo apenas acessa e manipula arquivos do próprio Steam conforme configurado. Nenhuma informação pessoal é coletada.
+      <div class="faq-item">
+        <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Como faço para baixar arquivos de um jogo?</button>
+        <div class="faq-answer">
+          Siga estes passos simples:
+          <ol>
+            <li>Digite o <b>App ID</b> ou nome do jogo no campo de busca (ex: <code>271590</code> ou "GTA V").</li>
+            <li>Selecione o jogo correto na lista de sugestões.</li>
+            <li>Se o jogo tiver branches, escolha qual deseja.</li>
+            <li>Clique em <b>ADD</b> — os arquivos serão baixados e copiados para as pastas configuradas.</li>
+          </ol>
+          <i>Dica:</i> Você pode buscar jogos pelo nome completo ou parcial (ex: “Far Cry”, “Counter” etc.).
+        </div>
       </div>
-    </div>
-    
-    <div class="faq-item">
-      <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Onde posso pedir suporte ou sugerir melhorias?</button>
-      <div class="faq-answer">
-        <b>Suporte rápido:</b><br>
-        - <a href="https://generator.renildomarcio.com.br/requests/index.php" target="_blank" style="color:#4be5e2;">Página de pedidos/suporte</a><br>
-        - Ou crie uma issue no <a href="https://github.com/psycodeliccircus/rm-manifest-tool-beta" target="_blank" style="color:#4be5e2;">GitHub do projeto</a>.
+
+      <div class="faq-item">
+        <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Como configuro as pastas onde os arquivos serão salvos?</button>
+        <div class="faq-answer">
+          Use os botões de pasta ao lado de cada campo:<br>
+          <ul>
+            <li><b>LOCALIZAÇÃO .ST/.LUA:</b> onde os arquivos .st ou .lua serão copiados.</li>
+            <li><b>LOCALIZAÇÃO DO .MANIFEST:</b> onde os arquivos .manifest vão ser salvos.</li>
+          </ul>
+          <b>Você pode escolher qualquer pasta do seu computador.</b> Se não escolher, o app usa o caminho padrão do Steam.<br>
+          <i>Dica:</i> Para restaurar para o padrão, basta apagar o campo e clicar novamente no botão de pasta.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> O que significa o aviso de proteção DRM?</button>
+        <div class="faq-answer">
+          Quando um AppID aparece com o aviso “possui proteção DRM”, significa que os arquivos desse jogo possuem criptografia, autenticação ou outros bloqueios feitos pela Steam.<br>
+          <b>Nesses casos:</b>
+          <ul>
+            <li>Os arquivos .manifest podem não funcionar fora do Steam.</li>
+            <li>Você pode receber erro ao tentar abrir ou usar os arquivos baixados.</li>
+            <li>Nem todos os jogos tem DRM — muitos arquivos funcionam normalmente.</li>
+          </ul>
+          <i>O app apenas alerta, mas permite o download caso você queira tentar usar por conta própria.</i>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Estou recebendo erro 404 ou “Branch não encontrado”. E agora?</button>
+        <div class="faq-answer">
+          <b>Isso pode acontecer por:</b>
+          <ul>
+            <li>AppID digitado errado (confira se é o ID certo do jogo na Steam).</li>
+            <li>O branch escolhido não existe ou está vazio (ex: “beta”, “experimental” etc).</li>
+            <li>O jogo ainda não foi adicionado ao servidor ou não tem manifest público.</li>
+          </ul>
+          <i>Solução:</i> Verifique o AppID, tente trocar o branch para “public” e confira se o jogo está disponível na Steam.<br>
+          Se persistir, <a href="https://generator.renildomarcio.com.br/requests/index.php" target="_blank">mande um pedido de suporte</a>.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Como atualizo meus arquivos de forma rápida?</button>
+        <div class="faq-answer">
+          Clique em <b>ATUALIZAR TUDO</b> para o app buscar os manifests mais recentes para o AppID selecionado e baixar novamente, substituindo os antigos.<br>
+          <i>Importante:</i> Só funciona para branch “public” ou jogos suportados. Se não houver arquivos novos, será avisado!
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Como o app atualiza para uma nova versão?</button>
+        <div class="faq-answer">
+          Sempre que você abrir o app, ele verifica se existe uma versão nova:<br>
+          <ul>
+            <li>Se houver, baixa e instala automaticamente — você só precisa aguardar o carregamento inicial (splash).</li>
+            <li>Se não houver, o app abre normalmente.</li>
+          </ul>
+          Não é necessário baixar manualmente do site, só aguardar a atualização automática.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Não consegui reiniciar o Steam, e agora?</button>
+        <div class="faq-answer">
+          O botão <b>REINICIE STEAM</b> tenta fechar e reabrir o Steam para você automaticamente, detectando o sistema operacional (Windows, Linux, Mac).<br>
+          <b>Se não funcionar:</b>
+          <ul>
+            <li>No Windows: será solicitado para você escolher o Steam.exe manualmente.</li>
+            <li>Em outros sistemas: feche e abra o Steam manualmente.</li>
+          </ul>
+          Se o Steam não iniciar, reinicie seu computador.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Posso usar o RM Manifest Tool com segurança? Algum risco?</button>
+        <div class="faq-answer">
+          Sim, o app é seguro! O código é aberto e <b>nenhuma informação pessoal ou conta Steam é coletada</b>.<br>
+          O app só lê e grava arquivos locais, conforme os caminhos que você escolheu.<br>
+          <i>Mas atenção:</i> Sempre baixe o app pelo site ou GitHub oficial para evitar versões falsas!
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Preciso ter a Steam instalada? Preciso estar online?</button>
+        <div class="faq-answer">
+          <ul>
+            <li><b>Steam instalada:</b> Não é obrigatório, mas recomendado para facilitar os caminhos de arquivos.</li>
+            <li><b>Internet:</b> Sim, você precisa estar online para baixar manifests, atualizar e buscar jogos.</li>
+            <li>O app pode funcionar offline para consultar arquivos já baixados anteriormente.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><i class="fa-solid fa-chevron-right"></i> Onde peço suporte, sugestões ou relatar bugs?</button>
+        <div class="faq-answer">
+          Você pode:
+          <ul>
+            <li>Enviar um <a href="https://generator.renildomarcio.com.br/requests/index.php" target="_blank">pedido de suporte</a> diretamente ao desenvolvedor.</li>
+            <li>Criar uma <a href="https://github.com/psycodeliccircus/rm-manifest-tool-beta/issues" target="_blank">issue no GitHub</a> com sugestões ou bugs.</li>
+            <li>Verificar atualizações e novidades no <a href="https://github.com/psycodeliccircus/rm-manifest-tool-beta" target="_blank">repositório oficial</a>.</li>
+          </ul>
+          Dê seu feedback, é muito importante!
+        </div>
       </div>
     </div>
   </div>
   <script>
-    // Expand/close FAQ
+    // Expande/recolhe FAQ
     document.querySelectorAll('.faq-question').forEach(btn => {
-      btn.onclick = () => {
-        const item = btn.parentElement;
-        item.classList.toggle('open');
-      };
+      btn.onclick = () => btn.parentElement.classList.toggle('open');
     });
   </script>
 </body>

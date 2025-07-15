@@ -23,7 +23,8 @@ function createWindow() {
     icon: "icons/icon.png",
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: false, // para usar ipcRenderer direto no splash
+      contextIsolation: true, // Agora seguro!
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
   splashWindow.setMenuBarVisibility(false);
@@ -56,9 +57,7 @@ function showMainWindow() {
   mainWindow.setMenuBarVisibility(false);
   mainWindow.loadFile('index.html');
 
-  // <- Adicione ESTE BLOCO:
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    // Permite apenas links http/https serem abertos externamente
     if (url.startsWith('http')) {
       shell.openExternal(url);
       return { action: 'deny' };
@@ -66,14 +65,12 @@ function showMainWindow() {
     return { action: 'allow' };
   });
 
-  // (Opcional, para clicks normais em links <a target="_blank">)
   mainWindow.webContents.on('will-navigate', (event, url) => {
     if (url.startsWith('http')) {
       event.preventDefault();
       shell.openExternal(url);
     }
   });
-  // ^ fim do bloco
 
   if (splashWindow) {
     splashWindow.close();
@@ -86,31 +83,31 @@ function startAutoUpdate() {
   autoUpdater.autoDownload = true;
 
   autoUpdater.on('checking-for-update', () => {
-    if (splashWindow) splashWindow.webContents.send('update-status', 'Verificando atualizações...');
+    if (splashWindow) splashWindow.webContents.send('splash-status', 'Verificando atualizações...');
   });
   autoUpdater.on('update-available', () => {
-    if (splashWindow) splashWindow.webContents.send('update-status', 'Atualização disponível! Baixando...');
+    if (splashWindow) splashWindow.webContents.send('splash-status', 'Atualização disponível! Baixando...');
   });
   autoUpdater.on('update-not-available', () => {
-    if (splashWindow) splashWindow.webContents.send('update-status', 'Nenhuma atualização encontrada.');
+    if (splashWindow) splashWindow.webContents.send('splash-status', 'Nenhuma atualização encontrada.');
     setTimeout(() => {
       showMainWindow();
     }, 1200);
   });
   autoUpdater.on('download-progress', (progress) => {
     if (splashWindow) {
-      splashWindow.webContents.send('update-progress', Math.floor(progress.percent));
-      splashWindow.webContents.send('update-status', `Baixando atualização: ${Math.floor(progress.percent)}%`);
+      splashWindow.webContents.send('splash-progress', Math.floor(progress.percent));
+      splashWindow.webContents.send('splash-status', `Baixando atualização: ${Math.floor(progress.percent)}%`);
     }
   });
   autoUpdater.on('update-downloaded', () => {
-    if (splashWindow) splashWindow.webContents.send('update-status', 'Atualização baixada. Instalando...');
+    if (splashWindow) splashWindow.webContents.send('splash-status', 'Atualização baixada. Instalando...');
     setTimeout(() => {
       autoUpdater.quitAndInstall();
     }, 1200);
   });
   autoUpdater.on('error', (err) => {
-    if (splashWindow) splashWindow.webContents.send('update-status', 'Erro ao atualizar. Abrindo app...');
+    if (splashWindow) splashWindow.webContents.send('splash-status', 'Erro ao atualizar. Abrindo app...');
     setTimeout(() => {
       showMainWindow();
     }, 1600);
@@ -149,11 +146,8 @@ ipcMain.handle('baixar-extrair-copiar', async (event, { appid, branch, luaLocati
         let body = '';
         res.on('data', chunk => { body += chunk.toString(); });
         res.on('end', () => {
-          // Converte possível encoding do PHP para utf8 (em alguns casos pode vir errado)
           let errorMsg = body;
-          try {
-            errorMsg = Buffer.from(body, 'binary').toString('utf8');
-          } catch {}
+          try { errorMsg = Buffer.from(body, 'binary').toString('utf8'); } catch {}
           const msg = `[DOWNLOAD ERROR] ${zipUrl} Status: ${res.statusCode} Body: ${errorMsg}`;
           console.error(msg);
           reject(new Error(`Download falhou. Status: ${res.statusCode}. ${errorMsg}`));
@@ -191,7 +185,7 @@ ipcMain.handle('baixar-extrair-copiar', async (event, { appid, branch, luaLocati
   return { luaCount, manifestCount };
 });
 
-// ========== IPC: RESTART STEAM (INTELIGENTE) ==========
+// ========== IPC: RESTART STEAM ==========
 ipcMain.handle('restart-steam', async (event) => {
   try {
     let steamExe = null;
@@ -248,7 +242,6 @@ function findSteamExe() {
       if (fs.existsSync(testPath)) return testPath;
     }
   }
-  // Registro do Windows
   try {
     const regKey = 'HKLM\\SOFTWARE\\WOW6432Node\\Valve\\Steam';
     const regQuery = require('child_process').execSync(`reg query "${regKey}" /v InstallPath`);
@@ -260,7 +253,6 @@ function findSteamExe() {
   return null;
 }
 
-// ========== INICIALIZAÇÃO ==========
 app.whenReady().then(createWindow);
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();

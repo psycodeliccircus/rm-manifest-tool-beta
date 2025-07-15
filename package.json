@@ -1,6 +1,6 @@
 {
   "name": "rm-manifest-tool-beta",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Ferramenta para manipulação de manifests Steam",
   "productName": "RM MANIFEST TOOL",
   "main": "main.js",

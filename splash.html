@@ -182,33 +182,34 @@
     </div>
     <div class="progress-txt" id="progressText">Iniciando...</div>
   </div>
-  <script>
-    if (window.electronAPI) {
-      window.electronAPI.onSplashStatus((_, text) => {
-        document.getElementById('progressText').textContent = text;
-      });
-      window.electronAPI.onSplashProgress((_, percent) => {
-        document.getElementById('progressBar').style.width = percent + '%';
-      });
+<script>
+  if (window.electronAPI) {
+    window.electronAPI.onSplashStatus((_, text) => {
+      document.getElementById('progressText').textContent = text;
+    });
+    window.electronAPI.onSplashProgress((_, percent) => {
+      document.getElementById('progressBar').style.width = percent + '%';
+    });
+  }
+  // fallback visual
+  if (!window.electronAPI) {
+    const steps = [
+      { text: "Carregando módulos...", percent: 22, delay: 620 },
+      { text: "Verificando dependências...", percent: 47, delay: 600 },
+      { text: "Checando conexão...", percent: 71, delay: 590 },
+      { text: "Preparando interface...", percent: 93, delay: 540 },
+      { text: "Finalizando...", percent: 100, delay: 500 },
+    ];
+    let i = 0;
+    function nextStep() {
+      if(i >= steps.length) return;
+      document.getElementById('progressText').textContent = steps[i].text;
+      document.getElementById('progressBar').style.width = steps[i].percent + "%";
+      setTimeout(() => { i++; nextStep(); }, steps[i].delay);
     }
-    // fallback visual
-    if (!window.electronAPI) {
-      const steps = [
-        { text: "Carregando módulos...", percent: 22, delay: 620 },
-        { text: "Verificando dependências...", percent: 47, delay: 600 },
-        { text: "Checando conexão...", percent: 71, delay: 590 },
-        { text: "Preparando interface...", percent: 93, delay: 540 },
-        { text: "Finalizando...", percent: 100, delay: 500 },
-      ];
-      let i = 0;
-      function nextStep() {
-        if(i >= steps.length) return;
-        document.getElementById('progressText').textContent = steps[i].text;
-        document.getElementById('progressBar').style.width = steps[i].percent + "%";
-        setTimeout(() => { i++; nextStep(); }, steps[i].delay);
-      }
-      window.onload = nextStep;
-    }
-  </script>
+    // CORRETO: espera o DOM
+    document.addEventListener('DOMContentLoaded', nextStep);
+  }
+</script>
 </body>
 </html>

@@ -9,12 +9,12 @@ const { exec, spawn } = require('child_process');
 let mainWindow;
 let splashWindow;
 
+// CRIA SPLASH E SÓ INICIA O AUTUPDATE DEPOIS DO LOAD
 function createWindow() {
-  // Cria janela splash
   splashWindow = new BrowserWindow({
     width: 420,
     height: 340,
-    minWidth: 340,      // Evita quebrar
+    minWidth: 340,
     minHeight: 300,
     frame: false,
     resizable: true,
@@ -25,25 +25,26 @@ function createWindow() {
     icon: "icons/icon.png",
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: true, // Agora seguro!
+      contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
   splashWindow.setMenuBarVisibility(false);
-  splashWindow.loadFile('splash.html');
 
-  // Detecta se está em desenvolvimento (npm start)
-  const isDev = !app.isPackaged;
-  if (isDev) {
-    setTimeout(() => {
-      showMainWindow();
-    }, 5200);
-  } else {
-    // Verifica atualização automática
-    startAutoUpdate();
-  }
+  // GARANTE que o autoupdate só comece após a splash estar carregada!
+  splashWindow.loadFile('splash.html').then(() => {
+    const isDev = !app.isPackaged;
+    if (isDev) {
+      setTimeout(() => {
+        showMainWindow();
+      }, 5200);
+    } else {
+      startAutoUpdate();
+    }
+  });
 }
 
+// JANELA PRINCIPAL
 function showMainWindow() {
   mainWindow = new BrowserWindow({
     width: 700,
@@ -85,31 +86,31 @@ function startAutoUpdate() {
   autoUpdater.autoDownload = true;
 
   autoUpdater.on('checking-for-update', () => {
-    if (splashWindow) splashWindow.webContents.send('progressText', 'Verificando atualizações...');
+    if (splashWindow) splashWindow.webContents.send('splash-status', 'Verificando atualizações...');
   });
   autoUpdater.on('update-available', () => {
-    if (splashWindow) splashWindow.webContents.send('progressText', 'Atualização disponível! Baixando...');
+    if (splashWindow) splashWindow.webContents.send('splash-status', 'Atualização disponível! Baixando...');
   });
   autoUpdater.on('update-not-available', () => {
-    if (splashWindow) splashWindow.webContents.send('progressText', 'Nenhuma atualização encontrada.');
+    if (splashWindow) splashWindow.webContents.send('splash-status', 'Nenhuma atualização encontrada.');
     setTimeout(() => {
       showMainWindow();
     }, 1200);
   });
   autoUpdater.on('download-progress', (progress) => {
     if (splashWindow) {
-      splashWindow.webContents.send('progressBar', Math.floor(progress.percent));
-      splashWindow.webContents.send('progressText', `Baixando atualização: ${Math.floor(progress.percent)}%`);
+      splashWindow.webContents.send('splash-progress', Math.floor(progress.percent));
+      splashWindow.webContents.send('splash-status', `Baixando atualização: ${Math.floor(progress.percent)}%`);
     }
   });
   autoUpdater.on('update-downloaded', () => {
-    if (splashWindow) splashWindow.webContents.send('progressText', 'Atualização baixada. Instalando...');
+    if (splashWindow) splashWindow.webContents.send('splash-status', 'Atualização baixada. Instalando...');
     setTimeout(() => {
       autoUpdater.quitAndInstall();
     }, 1200);
   });
   autoUpdater.on('error', (err) => {
-    if (splashWindow) splashWindow.webContents.send('progressText', 'Erro ao atualizar. Abrindo app...');
+    if (splashWindow) splashWindow.webContents.send('splash-status', 'Erro ao atualizar. Abrindo app...');
     setTimeout(() => {
       showMainWindow();
     }, 1600);
@@ -187,8 +188,8 @@ ipcMain.handle('baixar-extrair-copiar', async (event, { appid, branch, luaLocati
   return { luaCount, manifestCount };
 });
 
+// FAQ EM JANELA SEPARADA
 ipcMain.handle('abrir-faq', () => {
-  // Cria uma janela leve só para FAQ
   const faqWindow = new BrowserWindow({
     width: 700,
     height: 500,
@@ -199,7 +200,7 @@ ipcMain.handle('abrir-faq', () => {
     maximizable: false,
     modal: false,
     show: true,
-    parent: mainWindow, // Janela principal como pai (opcional)
+    parent: mainWindow,
     icon: "icons/icon.png",
     title: "FAQ - RM Manifest Tool",
     webPreferences: {
@@ -208,7 +209,7 @@ ipcMain.handle('abrir-faq', () => {
       nodeIntegration: false
     }
   });
-  faqWindow.setMenuBarVisibility(false); // <-- ESCONDE O MENU!
+  faqWindow.setMenuBarVisibility(false);
   faqWindow.loadFile('faqs.html');
 });
 

@@ -26,7 +26,7 @@ class Index {
           "renderer.js",
           "style.css",
           "splash.html",
-          "splash.css",
+          "faqs.html",
           "manifests/**/*",
           "icons/**/*"
         ],

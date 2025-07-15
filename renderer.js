@@ -587,3 +587,11 @@ window.openRequests = function() {
     window.open('https://generator.renildomarcio.com.br/requests/index.php', '_blank');
   }
 };
+
+window.openFaq = function() {
+  if (window.electronAPI && window.electronAPI.abrirFaq) {
+    window.electronAPI.abrirFaq();
+  } else {
+    window.open('faqs.html', '_blank');
+  }
+};

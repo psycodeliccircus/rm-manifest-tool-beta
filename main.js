@@ -185,6 +185,29 @@ ipcMain.handle('baixar-extrair-copiar', async (event, { appid, branch, luaLocati
   return { luaCount, manifestCount };
 });
 
+ipcMain.handle('abrir-faq', () => {
+  // Cria uma janela leve só para FAQ
+  const faqWindow = new BrowserWindow({
+    width: 600,
+    height: 700,
+    resizable: true,
+    minimizable: true,
+    maximizable: false,
+    modal: false,
+    show: true,
+    parent: mainWindow, // Janela principal como pai (opcional)
+    icon: "icons/icon.png",
+    title: "FAQ - RM Manifest Tool",
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false
+    }
+  });
+  faqWindow.setMenuBarVisibility(false); // <-- ESCONDE O MENU!
+  faqWindow.loadFile('faqs.html');
+});
+
 // ========== IPC: RESTART STEAM ==========
 ipcMain.handle('restart-steam', async (event) => {
   try {

@@ -6,7 +6,7 @@ const path      = require('path');
 const png2icons = require('png2icons');
 const Jimp      = require('jimp');
 const { productName } = require('./package.json');
-const { productNameExt } = require('./package.json');
+const { name } = require('./package.json');
 
 class Index {
   async build() {
@@ -15,10 +15,10 @@ class Index {
         generateUpdatesFilesForAllChannels: false,
         appId: 'com.renildomarcio.rm-manifest-tool',
         productName: productName,
-        executableName: productNameExt,
+        executableName: name,
         icon: './icons/icon.ico',
         copyright: 'Copyright © 2024-2025 RM Manifest Generator Beta - Dev by RenildoMarcio',
-        artifactName: '${productNameExt}-${os}-${arch}.${ext}',
+        artifactName: '${name}-${os}-${arch}.${ext}',
         files: [
           "main.js",
           "preload.js",
@@ -44,7 +44,7 @@ class Index {
           ]
         },
         nsis: {
-          artifactName: '${productNameExt}-${os}-${arch}.exe',
+          artifactName: '${name}-${os}-${arch}.exe',
           installerIcon: './icons/icon.ico',
           uninstallerIcon: './icons/icon.ico',
           oneClick: false,
@@ -61,7 +61,7 @@ class Index {
           target: [{ target: 'dmg', arch: ['x64', 'arm64'] }]
         },
         dmg: {
-          artifactName: '${productNameExt}-${os}-${arch}.dmg',
+          artifactName: '${name}-${os}-${arch}.dmg',
           title: 'RM Manifest Generator Installer'
         },
         linux: {
@@ -72,7 +72,7 @@ class Index {
           ]
         },
         appImage: {
-          artifactName: '${productNameExt}-${os}-${arch}.AppImage',
+          artifactName: '${name}-${os}-${arch}.AppImage',
           category: 'Utility'
         },
         extraResources: [

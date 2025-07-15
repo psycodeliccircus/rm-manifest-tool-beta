@@ -9,6 +9,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   abrirFaq: () => ipcRenderer.invoke('abrir-faq'),
 
   // Para o splash receber status/progresso do update
-  onSplashStatus: (cb) => ipcRenderer.on('splash-status', (event, ...args) => cb(event, ...args)),
-  onSplashProgress: (cb) => ipcRenderer.on('splash-progress', (event, ...args) => cb(event, ...args)),
+  onSplashStatus: (cb) => ipcRenderer.on('progressText', (event, ...args) => cb(event, ...args)),
+  onSplashProgress: (cb) => ipcRenderer.on('progressBar', (event, ...args) => cb(event, ...args)),
 });

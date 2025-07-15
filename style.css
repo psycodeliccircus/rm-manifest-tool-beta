@@ -5,6 +5,15 @@ body {
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
 }
 
+html, body {
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE e Edge antigos */
+}
+
+body::-webkit-scrollbar, html::-webkit-scrollbar {
+  display: none;              /* Chrome, Safari e Edge */
+}
+
 .app-container {
   border-radius: 22px;
   width: 100%;

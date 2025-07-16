@@ -35,21 +35,27 @@ crashReporter.start({
   uploadToServer: false
 });
 
+// Single Instance + Deep Link (Windows/Linux)
 const gotLock = app.requestSingleInstanceLock();
 if (!gotLock) {
   app.quit();
 } else {
-  app.on('second-instance', () => {
-    if (mainWindow) {
+  app.on('second-instance', (event, argv) => {
+    // procura URL do protocolo customizado
+    const url = argv.find(arg => arg.startsWith('rmmanifesttool://'));
+    if (url && mainWindow) {
+      mainWindow.webContents.send('deep-link', url);
       if (mainWindow.isMinimized()) mainWindow.restore();
       mainWindow.focus();
     }
   });
 }
 
+// Registrar protocolo
 if (!app.isDefaultProtocolClient('rmmanifesttool')) {
   app.setAsDefaultProtocolClient('rmmanifesttool');
 }
+// macOS deep-link
 app.on('open-url', (event, url) => {
   event.preventDefault();
   if (mainWindow) mainWindow.webContents.send('deep-link', url);
@@ -89,18 +95,15 @@ function createTray() {
     {
       label: 'Mostrar Aplicativo',
       click: () => {
-        if (!mainWindow) showMainWindow();
+        if (!mainWindow) createWindow();
         else mainWindow.show();
       }
     },
     {
       label: 'FAQ',
       click: () => {
-        if (mainWindow) {
-          openFaqWindow();
-        } else {
-          app.once('browser-window-created', openFaqWindow);
-        }
+        if (mainWindow) openFaqWindow();
+        else app.once('browser-window-created', openFaqWindow);
       }
     },
     { type: 'separator' },
@@ -113,7 +116,7 @@ function createTray() {
   tray.setContextMenu(contextMenu);
   tray.on('double-click', () => {
     if (mainWindow) mainWindow.show();
-    else showMainWindow();
+    else createWindow();
   });
 }
 
@@ -149,10 +152,9 @@ function createWindow() {
       ];
       let idx = 0;
       const runStep = () => {
-        const { text, percent, delay } = steps[idx];
+        const { text, percent, delay } = steps[idx++];
         splashWindow.webContents.send('splash-status', text);
         splashWindow.webContents.send('splash-progress', percent);
-        idx++;
         if (idx < steps.length) {
           setTimeout(runStep, delay);
         } else {
@@ -189,9 +191,9 @@ function showMainWindow() {
     }
     return { action: 'allow' };
   });
-  mainWindow.webContents.on('will-navigate', (event, url) => {
+  mainWindow.webContents.on('will-navigate', (e, url) => {
     if (url.startsWith('http')) {
-      event.preventDefault();
+      e.preventDefault();
       shell.openExternal(url);
     }
   });
@@ -246,16 +248,16 @@ function startAutoUpdate() {
 // ----------------------
 // IPC HANDLERS
 // ----------------------
-ipcMain.handle('choose-location', async (event, { type, defaultPath }) => {
-  const result = await dialog.showOpenDialog({
+ipcMain.handle('choose-location', async (_e, { type, defaultPath }) => {
+  const res = await dialog.showOpenDialog({
     properties: ['openDirectory'],
     defaultPath,
     title: 'Escolha a pasta de destino'
   });
-  return (!result.canceled && result.filePaths[0]) ? result.filePaths[0] : null;
+  return (!res.canceled && res.filePaths[0]) ? res.filePaths[0] : null;
 });
 
-ipcMain.handle('baixar-extrair-copiar', async (event, { appid, branch, luaLocation, manifestLocation }) => {
+ipcMain.handle('baixar-extrair-copiar', async (_e, { appid, branch, luaLocation, manifestLocation }) => {
   if (!appid || isNaN(appid)) throw new Error('AppID inválido');
   let zipUrl = `https://generator.renildomarcio.com.br/download.php?appid=${appid}`;
   if (branch && branch !== 'public') zipUrl += `&branch=${encodeURIComponent(branch)}`;
@@ -268,8 +270,8 @@ ipcMain.handle('baixar-extrair-copiar', async (event, { appid, branch, luaLocati
     require('https').get(zipUrl, res => {
       if (res.statusCode !== 200) {
         let body = '';
-        res.on('data', chunk => { body += chunk.toString(); });
-        res.on('end', () => reject(new Error(`Download falhou. Status: ${res.statusCode}. ${body}`)));
+        res.on('data', c => body += c.toString());
+        res.on('end', () => reject(new Error(`Download falhou. Status: ${res.statusCode}.`)));
         return;
       }
       res.pipe(file);
@@ -305,7 +307,7 @@ ipcMain.handle('restart-steam', async () => {
     if (process.platform === 'win32') {
       await execPromise('taskkill /IM steam.exe /F');
       await delay(2000);
-      let steamExe = findSteamExe() || await askForSteamExe();
+      const steamExe = findSteamExe() || await askForSteamExe();
       spawn(steamExe, [], { detached: true, stdio: 'ignore' });
       return { success: true, path: steamExe };
     }
@@ -326,7 +328,7 @@ ipcMain.handle('restart-steam', async () => {
 });
 
 function execPromise(cmd) {
-  return new Promise((res, rej) => exec(cmd, (err) => err ? rej(err) : res()));
+  return new Promise((res, rej) => exec(cmd, err => err ? rej(err) : res()));
 }
 function delay(ms) {
   return new Promise(res => setTimeout(res, ms));
@@ -336,9 +338,9 @@ function askForSteamExe() {
     title: 'Selecione o executável Steam.exe',
     filters: [{ name: 'Steam', extensions: ['exe'] }],
     properties: ['openFile']
-  }).then(result => {
-    if (result.canceled || !result.filePaths[0]) throw new Error('Steam.exe não localizado!');
-    return result.filePaths[0];
+  }).then(r => {
+    if (r.canceled || !r.filePaths[0]) throw new Error('Steam.exe não localizado!');
+    return r.filePaths[0];
   });
 }
 function findSteamExe() {
@@ -352,36 +354,24 @@ function findSteamExe() {
     const out = execSync('reg query "HKLM\\SOFTWARE\\WOW6432Node\\Valve\\Steam" /v InstallPath');
     const m = out.toString().match(/InstallPath\s+REG_SZ\s+([^\r\n]+)/i);
     if (m) {
-      const candidate = path.join(m[1], 'Steam.exe');
-      if (fs.existsSync(candidate)) return candidate;
+      const cand = path.join(m[1], 'Steam.exe');
+      if (fs.existsSync(cand)) return cand;
     }
   } catch {}
   return null;
 }
 
-// ----------------------
-// AUTO‑LAUNCH NO LOGIN
-// ----------------------
+// Auto‑launch no login
 app.setLoginItemSettings({
   openAtLogin: true,
   path: process.execPath,
   args: ['--processStart', `"${path.basename(process.execPath)}"`]
 });
 
-// ----------------------
-// CICLO DE VIDA
-// ----------------------
+// Lifecycle
 app.whenReady().then(createWindow);
+app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
+app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
-});
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
-});
-
-// ----------------------
-// ERROS GLOBAIS
-// ----------------------
-process.on('uncaughtException', err => log.error('Uncaught Exception:', err));
+process.on('uncaughtException',    err => log.error('Uncaught Exception:', err));
 process.on('unhandledRejection', reason => log.error('Unhandled Rejection:', reason));

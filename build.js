@@ -5,8 +5,7 @@ const fs        = require('fs');
 const path      = require('path');
 const png2icons = require('png2icons');
 const Jimp      = require('jimp');
-const { productName } = require('./package.json');
-const { name } = require('./package.json');
+const { productName, name } = require('./package.json');
 
 class Index {
   async build() {
@@ -17,7 +16,7 @@ class Index {
         productName: productName,
         executableName: name,
         icon: './icons/icon.ico',
-        copyright: 'Copyright © 2024-2025 RM Manifest Generator Beta - Dev by RenildoMarcio',
+        copyright: 'Copyright © 2024-2025 RM Manifest Generator Beta - Dev by Renildo Marcio',
         artifactName: '${name}-${os}-${arch}.${ext}',
         files: [
           "main.js",
@@ -76,15 +75,16 @@ class Index {
           category: 'Utility'
         },
         extraResources: [
-          { 
-            from: 'icons/icon.png', to: 'icons/icon.png',
-            from:  'manifests', to: 'manifests' 
-          }
+          { from: 'icons/icon.png', to: 'icons/icon.png' },
+          { from: 'manifests',      to: 'manifests' }
         ],
-        protocols: {
-          name: 'rm-manifest-tool-beta',
-          schemes: ['rm-manifest-beta']
-        }
+        // Registra protocolos customizados corretamente como array
+        protocols: [
+          {
+            name: 'RM Manifest Tool Beta Protocol',
+            schemes: ['rmmanifesttool', 'rm-manifest-beta']
+          }
+        ]
       }
     })
     .then(() => console.log('A build está concluída!'))
@@ -104,7 +104,7 @@ class Index {
       buffer = fs.readFileSync(urlOrFile);
     }
 
-    // Remove possíveis bytes extras após IEND (segurança)
+    // Remove bytes extras após IEND (segurança)
     const IEND = Buffer.from([0,0,0x00,0x00,0x49,0x45,0x4E,0x44]);
     const iendOffset = buffer.indexOf(IEND);
     if (iendOffset !== -1) {

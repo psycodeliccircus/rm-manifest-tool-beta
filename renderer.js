@@ -1,3 +1,24 @@
+// ————— Captura deep-links e faz a ação correspondente —————
+window.electronAPI.onDeepLink(url => {
+  try {
+    const parsed = new URL(url);
+    const action = parsed.hostname;              // ex: "open"
+    const params = Object.fromEntries(parsed.searchParams.entries());
+    if (action === 'open') {
+      const appid  = params.appid;
+      const branch = params.branch || 'public';
+      if (appid && !isNaN(appid)) {
+        document.getElementById('appid').value = appid;
+        fetchManifestInfo(appid, branch);
+        setStatus(`Abrindo AppID ${appid} (branch: ${branch})`, 'info');
+      }
+    }
+    // aqui você pode tratar outras ações, ex: rmmanifesttool://update?appid=...
+  } catch (e) {
+    console.error('Erro ao processar deep-link:', e);
+  }
+});
+
 // ---------------- VARIÁVEIS GLOBAIS ----------------
 let debounceTimer = null;
 let isProcessing = false;

@@ -518,6 +518,20 @@ body::-webkit-scrollbar, html::-webkit-scrollbar {
   filter: brightness(1.07);
 }
 
+/* Suporte botão destaque */
+.btn-suporte {
+  background: linear-gradient(90deg,#344875 20%,#30bba7 95%);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 3px 20px #36d6a930;
+}
+.btn-suporte:hover {
+  background: linear-gradient(90deg,#26ecd7,#235687 90%);
+  color: #fff;
+  filter: brightness(1.07);
+}
+
 /* Location box vidro e brilho leve */
 .location-box {
   background: linear-gradient(120deg, #1d2639cc 90%, #193a33cc 100%);

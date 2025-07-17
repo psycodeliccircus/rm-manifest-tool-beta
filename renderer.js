@@ -29,7 +29,17 @@ window.electronAPI.getSteamConfigPaths()
   })
   .catch(err => {
     console.error('Não foi possível localizar/crear pastas Steam:', err);
-    setStatus('Não foi possível acessar a pasta do Steam.', 'error');
+    const steamUrl = 'https://store.steampowered.com/about/';
+    // exibe um alerta com link clicável:
+    setStatus(
+      `Steam não encontrada. Por favor <a href="${steamUrl}" target="_blank" style="color:#0af; text-decoration:underline;">baixe e instale o Steam</a>.`,
+      'error'
+    );
+    // opcional: desabilita botões de download/atualizar
+    document.querySelectorAll('.btn-add, .btn-update').forEach(b => {
+      b.disabled = true;
+      b.style.opacity = '0.5';
+    });
   });
 
 // ---------------- VARIÁVEIS GLOBAIS ----------------
@@ -605,7 +615,7 @@ window.restartSteam = async function() {
   }
 };
 
-function showAlert(message, type = "info", timeout = 3200) {
+function showAlert(message, type = "info", timeout = 5200) {
   const icons = {
     success: '<i class="fa-solid fa-circle-check"></i>',
     error:   '<i class="fa-solid fa-circle-xmark"></i>',

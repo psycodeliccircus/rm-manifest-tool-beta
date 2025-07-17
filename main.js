@@ -361,6 +361,30 @@ function findSteamExe() {
   return null;
 }
 
+// IPC: garante e retorna as pastas de config do Steam
+ipcMain.handle('get-steam-config-paths', async () => {
+  // acha o executável do Steam
+  const steamExe = findSteamExe();
+  if (!steamExe) {
+    throw new Error('Steam não encontrado no sistema.');
+  }
+
+  // monta os paths
+  const steamDir   = path.dirname(steamExe);
+  const configDir  = path.join(steamDir, 'config');
+  const luaDir     = path.join(configDir, 'stplug-in');
+  const depotDir   = path.join(configDir, 'depotcache');
+
+  // cria se não existir
+  [configDir, luaDir, depotDir].forEach(dir => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  });
+
+  return { luaDir, depotDir };
+});
+
 // Auto‑launch no login
 app.setLoginItemSettings({
   openAtLogin: true,

@@ -9,6 +9,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   chooseLocation: (type, defaultPath) =>
     ipcRenderer.invoke('choose-location', { type, defaultPath }),
 
+  getSteamConfigPaths: () => ipcRenderer.invoke('get-steam-config-paths'),
+
   // Baixar, extrair e copiar
   baixarExtrairECopiar: (appid, branch, luaLocation, manifestLocation) =>
     ipcRenderer.invoke('baixar-extrair-copiar', { appid, branch, luaLocation, manifestLocation }),

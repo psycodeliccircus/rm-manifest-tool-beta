@@ -19,6 +19,19 @@ window.electronAPI.onDeepLink(url => {
   }
 });
 
+// ————— Localiza/Cria as pastas Steam config —————
+window.electronAPI.getSteamConfigPaths()
+  .then(({ luaDir, depotDir }) => {
+    luaLocation      = luaDir;
+    manifestLocation = depotDir;
+    document.getElementById('luaLocation').value     = luaLocation;
+    document.getElementById('manifestLocation').value = manifestLocation;
+  })
+  .catch(err => {
+    console.error('Não foi possível localizar/crear pastas Steam:', err);
+    setStatus('Não foi possível acessar a pasta do Steam.', 'error');
+  });
+
 // ---------------- VARIÁVEIS GLOBAIS ----------------
 let debounceTimer = null;
 let isProcessing = false;

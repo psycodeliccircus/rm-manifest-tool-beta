@@ -10,7 +10,7 @@
 </head>
 <body>
   <div class="background-frost"></div>
-  <div class="app-container">
+  <div class="app-container fade-in">
     <div class="app-title">
       <span class="app-logo">
         <img src="icons/icon.png" alt="Logo do app" class="logo-img">
@@ -86,6 +86,7 @@
     <footer class="app-footer">
       <div class="footer-text">
         © 2025 Renildo Marcio. Todos os direitos reservados.
+        <br><span id="app-version" class="app-version"></span><br>
       </div>
       <div class="footer-links">
         <a href="https://github.com/psycodeliccircus/rm-manifest-tool-beta" target="_blank">
@@ -101,5 +102,13 @@
 
   <div id="alert-container"></div>
   <script src="renderer.js"></script>
+
+  <!-- injeta a versão vinda do main via preload -->
+  <script>
+    window.electronAPI.getAppVersion().then(v => {
+      const el = document.getElementById('app-version');
+      if (el) el.textContent = 'RMMT v' + v;
+    });
+  </script>
 </body>
 </html>

@@ -279,6 +279,11 @@ ipcMain.handle('choose-location', async (_e, { type, defaultPath }) => {
   return (!res.canceled && res.filePaths[0]) ? res.filePaths[0] : null;
 });
 
+// handler para devolver a versão
+ipcMain.handle('get-app-version', () => {
+  return app.getVersion();
+});
+
 ipcMain.handle('baixar-extrair-copiar', async (_e, { appid, branch, luaLocation, manifestLocation }) => {
   if (!appid || isNaN(appid)) throw new Error('AppID inválido');
   let zipUrl = `https://generator.renildomarcio.com.br/download.php?appid=${appid}`;

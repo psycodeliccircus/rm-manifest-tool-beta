@@ -619,3 +619,10 @@ html, body {
   .app-footer .footer-text { font-size: 0.8rem; }
   .app-footer .footer-links { font-size: 0.82rem; }
 }
+
+.app-version {
+  margin: 0 8px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}

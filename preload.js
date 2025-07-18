@@ -25,6 +25,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onSplashStatus:   cb => ipcRenderer.on('splash-status',   (_e, text)    => cb(text)),
   onSplashProgress: cb => ipcRenderer.on('splash-progress', (_e, percent) => cb(percent)),
 
+  // Pegar a Versao do APP
+  getAppVersion: () => ipcRenderer.invoke('get-app-version'),
+
   // Deep link
   onDeepLink: cb => ipcRenderer.on('deep-link', (_e, url) => cb(url)),
 

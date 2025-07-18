@@ -36,7 +36,7 @@ window.electronAPI.getSteamConfigPaths()
       'error'
     );
     // opcional: desabilita botões de download/atualizar
-    document.querySelectorAll('.btn-add, .btn-update, .btn-remove, .choose-btn, .form-control').forEach(b => {
+    document.querySelectorAll('.btn-add, .btn-update, .btn-remove, .choose-btn, .form-control, .btn-restart').forEach(b => {
       b.disabled = true;
       b.style.opacity = '0.5';
     });

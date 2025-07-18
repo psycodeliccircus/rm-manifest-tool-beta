@@ -97,10 +97,10 @@ body {
 .splash-card {
   width: 95vw;
   height: 95vh;
-  max-width: 430px;
-  max-height: 370px;
-  min-width: 320px;
-  min-height: 260px;
+  max-width: 400px;
+  max-height: 300px;
+  min-width: 300px;
+  min-height: 200px;
   background: linear-gradient(120deg,#17202c 80%,#1a2236 100%);
   border: 2.2px solid #193347;
   border-radius: var(--radius-card);
@@ -124,16 +124,11 @@ body {
   border-radius: var(--radius-card);
   background: linear-gradient(130deg,#0affec 15%,#37c4b8 54%,#233654 100%);
   border: 3.2px solid #38e9e6cc;
-  box-shadow: 0 0 38px #36d6a9a0, 0 0 0 7px #00ffd633;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: logoGlow 2.1s infinite alternate;
 }
-@keyframes logoGlow {
-  0%   { box-shadow: 0 0 38px #36d6a9a0, 0 0 0 7px #00ffd62a; }
-  100% { box-shadow: 0 0 66px #40ffd690, 0 0 0 18px #2de0e63c; }
-}
+
 .splash-logo-box img {
   width: 54px;
   height: 54px;
@@ -238,10 +233,6 @@ body {
    RESPONSIVO
    ==================================== */
 @media (max-width: 430px) {
-  .splash-card {
-    padding: 8vw 3vw 3vw;
-    border-radius: 10px;
-  }
   .splash-title { font-size: 1.03rem; }
   .splash-logo-box {
     width: 39px;

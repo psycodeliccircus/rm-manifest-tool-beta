@@ -131,10 +131,14 @@ html, body {
   height: 36px;
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(54,214,233,0.44);
-  background: transparent;
+  background: linear-gradient(130deg,#2d2d2d 15%,#232525 54%,#1c1f24 100%);
+  color: var(--clr-accent);
+  font-size: 0.9rem;
+  border-radius: 8px;
+  font-weight: 600;
 }
 .badge-beta {
-  background: #173245;
+  background: linear-gradient(130deg,#2d2d2d 15%,#232525 54%,#1c1f24 100%);
   color: var(--accent);
   padding: 2px 11px;
   font-size: var(--fs-small);
@@ -571,4 +575,47 @@ html, body {
     font-size: 0.97rem;
     padding: 8px 0;
   }
+}
+
+/* ========== FOOTER ========== */
+.app-footer {
+  margin-top: auto;              /* empurra para o fim do flex container */
+  padding: 10px 0 6px;
+  text-align: center;
+  background: transparent;/* vidro levemente mais escuro */
+  border-top: 1px solid rgba(37,49,68,0.6);
+  backdrop-filter: blur(6px);
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
+}
+
+.app-footer .footer-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.app-footer .footer-links {
+  font-size: 0.9rem;
+}
+
+.app-footer .footer-links a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  margin: 0 6px;
+}
+
+.app-footer .footer-links a:hover {
+  color: var(--primary);
+}
+
+.app-footer .separator {
+  color: var(--text-muted);
+  margin: 0 4px;
+}
+
+/* responsivo: reduzir fonte em telas pequenas */
+@media (max-width: 380px) {
+  .app-footer .footer-text { font-size: 0.8rem; }
+  .app-footer .footer-links { font-size: 0.82rem; }
 }

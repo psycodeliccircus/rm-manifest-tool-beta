@@ -5,166 +5,264 @@
   <title>Carregando...</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    html, body {
-      background: transparent;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-    }
-    body {
-      width: 100vw; height: 100vh;
-      min-height: 100vh; min-width: 100vw;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #eafdf8;
-      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-    }
-    .splash-card {
-      width: 95vw;
-      height: 95vh;
-      max-width: 430px;
-      max-height: 370px;
-      min-width: 320px;
-      min-height: 260px;
-      background: linear-gradient(120deg,#17202c 80%,#1a2236 100%);
-      border-radius: 22px;
-      padding: 38px 26px 26px 26px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      position: relative;
-      z-index: 2;
-      border: 2.2px solid #193347;
-      box-sizing: border-box;
-      transition: max-width 0.2s, max-height 0.2s;
-    }
+/* style.css */
 
-    .splash-logo-box {
-      width: 74px; height: 74px;
-      margin-bottom: 12px;
-      border-radius: 22px;
-      background: linear-gradient(130deg,#0affec 15%,#37c4b8 54%,#233654 100%);
-      box-shadow: 0 0 38px #36d6a9a0, 0 0 0 7px #00ffd633;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: visible;
-      border: 3.2px solid #38e9e6cc;
-      animation: logoGlow 2.1s infinite alternate;
-    }
-    @keyframes logoGlow {
-      0% { box-shadow: 0 0 38px #36d6a9a0, 0 0 0 7px #00ffd62a; }
-      100% { box-shadow: 0 0 66px #40ffd690, 0 0 0 18px #2de0e63c; }
-    }
-    .splash-logo-box img {
-      width: 54px; height: 54px;
-      border-radius: 14px;
-      background: #18243c;
-      object-fit: contain;
-      box-shadow: 0 2px 18px #1bf6e4a0;
-      z-index: 1;
-      position: relative;
-      border: 0.5px solid #aafffd3a;
-    }
+/* ====================================
+   VARIÁVEIS DE TEMA (fácil manutenção)
+   ==================================== */
+:root {
+  /* cores principais e complementares */
+  --bg-gradient-start: #19202e;
+  --bg-gradient-end:   #22354a;
+  --card-bg:           rgba(25,33,45,0.89);
+  --frost-gradient:    linear-gradient(125deg, #19202e 65%, #22354a 100%);
+  --primary:           #36d6a9;
+  --primary-dark:      #20a389;
+  --accent:            #4be5e2;
+  --danger:            #ff6464;
+  --warn:              #e7bd62;
 
-    .splash-title {
-      font-size: 1.28rem;
-      font-weight: 800;
-      letter-spacing: 1.3px;
-      margin-bottom: 0;
-      color: #57ffe0;
-      text-shadow: 0 2px 20px #1be3e375, 0 0 9px #1be3e3c0;
-      text-align: center;
-      margin-top: 0px;
-      word-break: break-word;
-    }
-    .splash-badge {
-      color: #fff;
-      font-size: 0.96rem;
-      letter-spacing: 0.5px;
-      background: linear-gradient(90deg, #3ddfc6 40%, #1e89b7 120%);
-      padding: 2px 10px;
-      border-radius: 11px;
-      margin-left: 7px;
-      font-weight: 700;
-      text-shadow: 0 1px 6px #173245b8;
-      display: inline-block;
-      vertical-align: middle;
-      box-shadow: 0 2px 9px #3ddfc671;
-    }
-    .splash-subtitle {
-      color: #b9f3ea;
-      font-size: 1.05rem;
-      opacity: 0.98;
-      margin-bottom: 19px;
-      margin-top: 8px;
-      text-align: center;
-      letter-spacing: 1.1px;
-      font-weight: 500;
-      text-shadow: 0 1px 7px #14efc525;
-    }
-    .progress-bar-bg {
-      width: 100%;
-      height: 15px;
-      background: #181e28;
-      border-radius: 13px;
-      box-shadow: 0 2px 14px #25e7e71b inset;
-      overflow: hidden;
-      margin-bottom: 13px;
-      border: 2.2px solid #28f3e3;
-      position: relative;
-      z-index: 2;
-      margin-top: 9px;
-      display: flex;
-      align-items: center;
-      max-width: 340px;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      width: 0;
-      background: linear-gradient(90deg,#53ffe2 10%,#00fff6 60%,#36d6a9 100%);
-      border-radius: 15px;
-      box-shadow: 0 2px 13px #4be5e285;
-      transition: width 0.43s cubic-bezier(.45,.29,.43,1.23);
-    }
-    .progress-bar-bg:after {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      pointer-events: none;
-      border-radius: 13px;
-      background: linear-gradient(90deg,transparent 0%,#b9fff9c0 65%,transparent 100%);
-      opacity: .09;
-      z-index: 1;
-    }
-    .progress-txt {
-      text-align: center;
-      font-size: 1.09rem;
-      color: #57ffe0;
-      letter-spacing: 0.8px;
-      opacity: 0.91;
-      text-shadow: 0 2px 6px #01332636;
-      font-weight: 600;
-      margin-top: 3px;
-    }
+  /* tipografia */
+  --text-main:         #fff;
+  --text-muted:        #8494b0;
+  --font-base:         'Inter', 'Segoe UI', Arial, sans-serif;
+  --fs-base:           1rem;
+  --fs-small:          0.93rem;
+  --fs-large:          1.06rem;
 
-    @media (max-width: 430px) {
-      .splash-card { padding: 8vw 3vw 3vw 3vw; min-width: 0; border-radius: 10px; }
-      .splash-title { font-size: 1.03rem; }
-      .splash-logo-box { width: 39px; height: 39px;}
-      .splash-logo-box img { width: 27px; height: 27px;}
-      .progress-bar-bg { height: 12px; border-radius: 10px; max-width: 96vw; }
-      .splash-badge { font-size: 0.83rem; padding: 2px 7px; }
-      .splash-subtitle { font-size: 0.93rem; }
-      .progress-txt { font-size: 0.95rem; }
-    }
+  /* bordas e sombras */
+  --border:            #253144b0;
+  --shadow-light:      rgba(31,215,203,0.13);
+  --shadow-strong:     rgba(20,25,30,0.28);
+  --radius-card:       22px;
+  --radius-btn:        9px;
+  --radius-input:      8px;
+
+  /* transições e animações */
+  --transition-fast:   0.13s ease;
+  --transition-med:    0.17s ease;
+  --transition-slow:   0.25s ease;
+}
+
+/* =========================
+   RESET E CONFIGURAÇÕES GLOBAIS
+   ========================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Oculta barras de rolagem, mas mantém scroll ativo */
+html, body {
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE/Edge antigos */
+  overflow-y: auto;           /* rolagem vertical quando necessário */
+  overflow-x: hidden;         /* impede rolagem horizontal */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+body {
+  min-height: 100vh;
+  width: 100vw;
+  background: transparent;
+  color: var(--text-main);
+  font-family: var(--font-base);
+  font-size: var(--fs-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ====================================
+   FUNDO VIDRO FROST
+   ==================================== */
+.background-frost {
+  position: fixed;
+  inset: 0;
+  background: var(--frost-gradient);
+  filter: blur(6px) brightness(1.02);
+  z-index: 0;
+  opacity: 0.96;
+  pointer-events: none;
+}
+
+/* ====================================
+   CARTÃO SPLASH (container principal)
+   ==================================== */
+.splash-card {
+  width: 95vw;
+  height: 95vh;
+  max-width: 430px;
+  max-height: 370px;
+  min-width: 320px;
+  min-height: 260px;
+  background: linear-gradient(120deg,#17202c 80%,#1a2236 100%);
+  border: 2.2px solid #193347;
+  border-radius: var(--radius-card);
+  padding: 38px 26px 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  transition: max-width var(--transition-fast), max-height var(--transition-fast);
+  box-sizing: border-box;
+}
+
+/* ====================================
+   LOGO COM EFEITO DE GLOW
+   ==================================== */
+.splash-logo-box {
+  width: 74px;
+  height: 74px;
+  margin-bottom: 12px;
+  border-radius: var(--radius-card);
+  background: linear-gradient(130deg,#0affec 15%,#37c4b8 54%,#233654 100%);
+  border: 3.2px solid #38e9e6cc;
+  box-shadow: 0 0 38px #36d6a9a0, 0 0 0 7px #00ffd633;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: logoGlow 2.1s infinite alternate;
+}
+@keyframes logoGlow {
+  0%   { box-shadow: 0 0 38px #36d6a9a0, 0 0 0 7px #00ffd62a; }
+  100% { box-shadow: 0 0 66px #40ffd690, 0 0 0 18px #2de0e63c; }
+}
+.splash-logo-box img {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: #18243c;
+  object-fit: contain;
+  box-shadow: 0 2px 18px #1bf6e4a0;
+  position: relative;
+  z-index: 1;
+  border: 0.5px solid #aafffd3a;
+}
+
+/* ====================================
+   TÍTULO E BADGE
+   ==================================== */
+.splash-title {
+  font-size: 1.28rem;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  color: #57ffe0;
+  text-shadow: 0 2px 20px #1be3e375, 0 0 9px #1be3e3c0;
+  text-align: center;
+  margin: 0;
+  word-break: break-word;
+}
+.splash-badge {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 2px 10px;
+  background: linear-gradient(90deg, #3ddfc6 40%, #1e89b7 120%);
+  color: #fff;
+  font-size: 0.96rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 11px;
+  text-shadow: 0 1px 6px #173245b8;
+  box-shadow: 0 2px 9px #3ddfc671;
+  vertical-align: middle;
+}
+
+/* ====================================
+   SUBTÍTULO
+   ==================================== */
+.splash-subtitle {
+  margin: 8px 0 19px 0;
+  color: #b9f3ea;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 1.1px;
+  text-shadow: 0 1px 7px #14efc525;
+  text-align: center;
+  opacity: 0.98;
+}
+
+/* ====================================
+   BARRA DE PROGRESSO
+   ==================================== */
+.progress-bar-bg {
+  width: 100%;
+  max-width: 340px;
+  height: 15px;
+  background: #181e28;
+  border: 2.2px solid #28f3e3;
+  border-radius: 13px;
+  box-shadow: 0 2px 14px #25e7e71b inset;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  margin: 9px 0 13px 0;
+  display: flex;
+  align-items: center;
+}
+.progress-bar-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, #b9fff9c0 65%, transparent 100%);
+  opacity: 0.09;
+  pointer-events: none;
+  border-radius: 13px;
+}
+.progress-bar-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #53ffe2 10%, #00fff6 60%, #36d6a9 100%);
+  border-radius: 15px;
+  box-shadow: 0 2px 13px #4be5e285;
+  transition: width 0.43s cubic-bezier(.45,.29,.43,1.23);
+}
+.progress-txt {
+  font-size: 1.09rem;
+  font-weight: 600;
+  color: #57ffe0;
+  text-align: center;
+  letter-spacing: 0.8px;
+  text-shadow: 0 2px 6px #01332636;
+  margin-top: 3px;
+  opacity: 0.91;
+}
+
+/* ====================================
+   RESPONSIVO
+   ==================================== */
+@media (max-width: 430px) {
+  .splash-card {
+    padding: 8vw 3vw 3vw;
+    border-radius: 10px;
+  }
+  .splash-title { font-size: 1.03rem; }
+  .splash-logo-box {
+    width: 39px;
+    height: 39px;
+  }
+  .splash-logo-box img {
+    width: 27px;
+    height: 27px;
+  }
+  .progress-bar-bg {
+    height: 12px;
+    border-radius: 10px;
+    max-width: 96vw;
+  }
+  .splash-badge {
+    font-size: 0.83rem;
+    padding: 2px 7px;
+  }
+  .splash-subtitle { font-size: 0.93rem; }
+  .progress-txt { font-size: 0.95rem; }
+}
   </style>
 </head>
 <body>

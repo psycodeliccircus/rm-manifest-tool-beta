@@ -67,12 +67,13 @@ app.on('open-url', (event, url) => {
 function openFaqWindow() {
   const faqWindow = new BrowserWindow({
     width: 700,
-    height: 500,
+    height: 600,
     resizable: true,
     frame: false,
     transparent: true,
     minimizable: true,
     maximizable: false,
+    titleBarStyle: 'hidden',
     parent: mainWindow,
     icon: path.join(__dirname, 'icons/icon.png'),
     title: 'FAQ - RM Manifest Tool',
@@ -82,8 +83,28 @@ function openFaqWindow() {
       nodeIntegration: false
     }
   });
+
   faqWindow.setMenuBarVisibility(false);
   faqWindow.loadFile('faqs.html');
+
+  // Intercepta tentativas de abrir novas janelas (target="_blank" ou window.open)
+  faqWindow.webContents.setWindowOpenHandler(({ url }) => {
+    // Somente abre externamente URLs http(s)
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      shell.openExternal(url);
+    }
+    return { action: 'deny' };
+  });
+
+  // Intercepta navegações dentro da própria janela (links <a href="...">)
+  faqWindow.webContents.on('will-navigate', (event, url) => {
+    // Se for diferente do arquivo local de FAQ, abre externamente
+    const faqPath = `file://${path.join(__dirname, 'faqs.html')}`;
+    if (url !== faqPath) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
+  });
 }
 
 // ----------------------
@@ -129,6 +150,7 @@ function createWindow() {
     minWidth: 340, minHeight: 300,
     frame: false, transparent: true,
     alwaysOnTop: true, resizable: true,
+    titleBarStyle: 'hidden',
     show: true, center: true,
     icon: path.join(__dirname, 'icons/icon.png'),
     webPreferences: {

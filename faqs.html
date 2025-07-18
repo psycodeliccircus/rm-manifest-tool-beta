@@ -2,398 +2,283 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>FAQ – RM Manifest Tool</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ – RM Manifest Tool</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap & FontAwesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
   <style>
+    /* ——— Core Variables ——— */
     :root {
-      --clr-bg: #232f45;
-      --clr-panel: rgba(35,47,69,0.85);
-      --clr-accent: #4be5e2;
-      --clr-primary: #24394d;
-      --clr-secondary: #213142;
-      --clr-text: #eafdf8;
-      --clr-head: #86e4cd;
-      --radius: 16px;
-      --spacing: 1rem;
-      --transition: 0.3s ease;
-      --font: 'Inter','Segoe UI',Arial,sans-serif;
-    }
-    *, *::before, *::after {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
-    html, body {
-      height: 100%;
-      font-family: var(--font);
-      background: transparent;
-      color: var(--clr-text);
-      overflow: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--clr-accent) var(--clr-bg);
-    }
-    body::-webkit-scrollbar {
-      width: 8px; background: var(--clr-bg);
-    }
-    body::-webkit-scrollbar-thumb {
-      background: var(--clr-accent); border-radius: 4px;
+      --bg-main: transparent;
+      --bg-panel: rgba(30, 36, 50, 0.6);
+      --accent: #4be5e2;
+      --accent-dark: #36d6a9;
+      --text: #eafdf8;
+      --subtext: #a3abb8;
+      --border-light: rgba(255, 255, 255, 0.1);
+      --radius: 14px;
+      --transition: 0.25s ease;
+      --font: 'Inter', sans-serif;
     }
 
-    /* Painel FAQ — agora não arrastável */
-    .faq-container {
-      max-width: 680px;
-      max-height: 85vh;
-      margin: 64px auto var(--spacing);
-      background: #232f45;
-      backdrop-filter: blur(1px);
-      border-radius: var(--radius);
-      padding: 2rem;
-      position: relative;
+    /* ——— Global Reset ——— */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-main);
+      color: var(--text);
+      font-family: var(--font);
+      height: 100vh;
+      display: flex; align-items: center; justify-content: center;
       overflow: hidden;
     }
 
-    /* Elementos interativos */
-    .faq-container .close-btn,
-    .faq-question,
-    .faq-question i,
-    .faq-answer a {
-      cursor: pointer;
+    /* ——— Container Principal ——— */
+    .faq-container {
+      width: 96vw; max-width: 720px; max-height: 92vh;
+      background: #181e28;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 32px transparent;
+      backdrop-filter: blur(1px);
+      display: flex; flex-direction: column; overflow: hidden;
     }
 
-    /* Botão fechar */
-    .faq-container .close-btn {
-      position: absolute;
-      top: 1rem; right: 1rem;
-      font-size: 1.3rem;
-      background: none; border: none;
-      color: #ddd;
-      transition: color var(--transition);
+    /* ——— Header & Busca ——— */
+    .faq-header,
+    .faq-search {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(0,0,0,0.4);
+      border-bottom: 1px solid var(--border-light);
+      display: flex; align-items: center; padding: 16px 24px;
     }
-    .faq-container .close-btn:hover {
-      color: #ff6464;
-    }
-
-    /* Cabeçalho */
-    .faq-header {
-      display: flex; align-items: center; justify-content: center;
-      gap: 1rem; margin-bottom: 0.5rem;
-    }
-    .app-logo {
-      width: 48px; height: 48px; border-radius: 12px;
-      background: var(--clr-accent);
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 12px var(--clr-accent);
-    }
+    .faq-header { justify-content: space-between; }
     .app-logo img {
-      width: 32px; height: 32px; object-fit: contain;
-      background: linear-gradient(130deg,#2d2d2d 15%,#232525 54%,#1c1f24 100%);
-      color: var(--clr-accent);
-      font-size: 0.9rem;
-      border-radius: 8px;
-      font-weight: 600;
+      width: 50px; height: 50px; border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      margin-right: 16px;
     }
     .faq-title {
-      font-size: 1.5rem;
-      color: var(--clr-head);
-      font-weight: 700;
-      display: flex; align-items: center; gap: 0.5rem;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+      font-size: 1.6rem; font-weight: 700;
+      color: var(--accent);
     }
     .badge-beta {
-      background: linear-gradient(130deg,#2d2d2d 15%,#232525 54%,#1c1f24 100%);
-      color: var(--clr-accent);
-      font-size: 0.9rem;
-      padding: 0.2rem 0.6rem;
-      border-radius: 8px;
-      font-weight: 600;
+      background: #173245; color: var(--accent);
+      padding: 3px 10px; border-radius: 8px;
+      font-size: 0.85rem; margin-left: 12px;
+    }
+    .close-btn {
+      background: none; border: none;
+      font-size: 1.9rem; color: var(--subtext);
+      cursor: pointer; transition: color var(--transition);
+    }
+    .close-btn:hover { color: var(--text); }
+
+    .faq-search {
+      gap: 8px;
+    }
+    .faq-search i {
+      font-size: 1.1rem; color: var(--accent);
+    }
+    .faq-search input {
+      flex: 1; padding: 10px 14px;
+      border: none; border-radius: var(--radius);
+      background: rgba(255,255,255,0.08); color: var(--text);
+      font-size: 1rem; transition: background var(--transition);
+    }
+    .faq-search input:focus {
+      background: rgba(255,255,255,0.12); outline: none;
+    }
+    .faq-search input::placeholder { color: var(--subtext); }
+
+    /* ——— Meta ——— */
+    .faq-meta {
+      padding: 8px 24px; font-size: 0.9rem;
+      color: var(--subtext); background: rgba(0,0,0,0.2);
     }
 
-    /* Introdução */
-    .faq-intro {
-      text-align: center;
-      font-size: 1.1rem;
-      color: var(--clr-accent);
-      margin-bottom: 1.5rem;
-    }
-
-    /* Lista */
+    /* ——— Lista de Perguntas (Cartões) ——— */
     .faq-list {
-      max-height: 60vh;
-      overflow-y: auto;
-      padding-right: 0.5rem;
+      flex: 1; overflow-y: auto; padding: 8px 0 16px;
     }
-    .faq-item {
-      margin-bottom: 1rem;
+    .faq-list::-webkit-scrollbar {
+      width: 8px; background: transparent;
+    }
+    .faq-list::-webkit-scrollbar-thumb {
+      background: var(--accent-dark); border-radius: 4px;
+    }
+
+    .faq-list details {
+      margin: 12px 16px;
+      background: rgba(0, 0, 0, 0.4);
       border-radius: var(--radius);
-      background: var(--clr-secondary);
-      transition: transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      transition: transform var(--transition), background var(--transition);
     }
-    .faq-item:hover {
+    .faq-list details:hover {
+      background: rgba(0, 0, 0, 0.6);
       transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.6);
     }
 
-    /* Pergunta */
-    .faq-question {
-      width: 100%; padding: 1rem 1.2rem;
-      font-size: 1.05rem; font-weight: 600;
-      color: var(--clr-accent);
-      background: linear-gradient(
-        90deg,
-        var(--clr-primary) 60%, var(--clr-secondary) 100%
-      );
-      border: none; outline: none;
+    .faq-list details + details {
+      margin-top: 8px;
+    }
+
+    .faq-list summary {
+      list-style: none; cursor: pointer;
+      padding: 16px 24px; font-size: 1.15rem; font-weight: 600;
       display: flex; align-items: center; justify-content: space-between;
-      transition: background var(--transition), color var(--transition);
+      background: rgba(255, 255, 255, 0.05);
+      transition: background var(--transition);
     }
-    .faq-question:hover {
-      background: var(--clr-primary); color: #fff;
+    .faq-list summary:hover {
+      background: rgba(255, 255, 255, 0.1);
     }
-    .faq-question i {
-      transition: transform var(--transition);
+    .faq-list summary::marker { display: none; }
+    .faq-list summary::before {
+      content: "\f054"; /* chevron-right */
+      font-family: "Font Awesome 5 Free"; font-weight: 900;
+      margin-right: 14px; transition: transform var(--transition);
+      color: var(--accent);
     }
-    .faq-item.open .faq-question i {
-      transform: rotate(90deg);
+    .faq-list details[open] summary::before {
+      transform: rotate(90deg) translateX(2px);
     }
 
-    /* Resposta */
-    .faq-answer {
-      max-height: 0; overflow: hidden;
-      background: var(--clr-primary);
-      color: var(--clr-text);
-      padding: 0 1.2rem;
-      transition: max-height 0.4s ease, padding 0.3s ease;
-      font-size: 1rem; line-height: 1.5;
+    .faq-list .faq-answer {
+      display: none;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px 24px 20px 24px;
+      color: var(--subtext); font-size: 0.97rem; line-height: 1.6;
     }
-    .faq-item.open .faq-answer {
-      padding: 1rem 1.2rem 1.2rem;
-      max-height: 30rem;
+    .faq-list details[open] .faq-answer {
+      display: block;
     }
-    .faq-answer a {
-      color: var(--clr-accent); text-decoration: underline;
-      font-weight: 500;
+    .faq-list .faq-answer ul,
+    .faq-list .faq-answer ol {
+      margin: 8px 0 8px 24px;
     }
-    .faq-answer a:hover { color: #fff; }
+    .faq-list .faq-answer li {
+      margin-bottom: 4px;
+    }
+    .faq-list .faq-answer a {
+      color: var(--accent); text-decoration: none;
+      transition: color var(--transition);
+    }
+    .faq-list .faq-answer a:hover {
+      color: var(--accent-dark);
+    }
 
-    .faq-answer ul, .faq-answer ol {
-      margin: 0.8rem 0; padding-left: 1.4rem;
-      color: #c0e8e0;
+    /* ——— Footer ——— */
+    .faq-footer {
+      padding: 14px 24px; background: rgba(0,0,0,0.4);
+      border-top: 1px solid var(--border-light);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.85rem; color: var(--subtext);
     }
-    .faq-answer li { margin-bottom: 0.4rem; }
+    .faq-footer a {
+      margin-left: 16px; color: var(--accent);
+      text-decoration: none; transition: color var(--transition);
+    }
+    .faq-footer a:hover {
+      color: var(--accent-dark);
+    }
 
-    /* Responsivo */
-    @media(max-width:600px) {
-      .faq-container {
-        margin: 12px 1rem 1rem;
-        padding: 1.5rem;
+    /* ——— Responsivo ——— */
+    @media (max-width: 500px) {
+      .faq-header, .faq-search, .faq-footer {
+        padding: 12px 16px;
       }
       .faq-title { font-size: 1.3rem; }
-      .faq-intro { font-size: 1rem; }
-      .faq-question {
-        font-size: 1rem; padding: 0.8rem 1rem;
+      .faq-list details {
+        margin: 8px 12px;
       }
-      .faq-answer { font-size: 0.95rem; }
+      .faq-list summary,
+      .faq-list .faq-answer {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      summary { font-size: 1rem; padding: 14px 0; }
+      .close-btn { font-size: 1.6rem; }
     }
   </style>
 </head>
 <body>
-  <div class="faq-container">
-    <button class="close-btn" onclick="window.close()" title="Fechar">&times;</button>
-
+  <div class="faq-container" role="region" aria-label="FAQ">
+    <!-- Header -->
     <div class="faq-header">
-      <span class="app-logo"><img src="icons/icon.png" alt="Logo"></span>
-      <span class="faq-title">
-        RM MANIFEST TOOL
-        <span class="badge-beta">OPEN BETA</span>
-      </span>
+      <div class="d-flex align-items-center">
+        <span class="app-logo">
+          <img src="icons/icon.png" alt="Logo RM Manifest Tool">
+        </span>
+        <span class="faq-title">
+          RM MANIFEST TOOL
+          <span class="badge-beta">OPEN BETA</span>
+        </span>
+      </div>
+      <button class="close-btn" onclick="window.close()" aria-label="Fechar FAQ">&times;</button>
     </div>
 
-    <div class="faq-intro">
-      <i class="fa-solid fa-circle-question"></i>
-      FAQ / Dúvidas Frequentes
+    <!-- Barra de Busca -->
+    <div class="faq-search">
+      <i class="fa-solid fa-search"></i>
+      <input id="faq-search" type="text" placeholder="Buscar perguntas..." aria-label="Buscar perguntas">
     </div>
 
-    <div class="faq-list">
+    <!-- Meta -->
+    <div class="faq-meta">
+      Última atualização em: <span id="last-updated">--/--/----</span>
+    </div>
 
-      <div class="faq-item">
-        <button class="faq-question">
-          <i class="fa-solid fa-chevron-right"></i>
-          O que é o RM Manifest Tool e para que serve?
-        </button>
-        <div class="faq-answer">
-          O RM Manifest Tool é um app para Windows/Linux/Mac que facilita o download e gerenciamento de arquivos <b>.manifest</b> e <b>.lua/.st</b> de jogos Steam. Ele automatiza tarefas como:
-          <ul>
-            <li>Buscar AppIDs e baixar rapidamente arquivos originais do Steam.</li>
-            <li>Salvar esses arquivos em pastas customizadas do seu PC.</li>
-            <li>Atualizar arquivos já baixados com um clique.</li>
-            <li>Facilitar a manipulação para projetos de tradução, mods, backups ou estudos.</li>
-          </ul>
-          Você não precisa usar comandos do SteamCMD nem procurar arquivos manualmente — o app faz tudo por você, com interface amigável!
-        </div>
+    <!-- Lista de FAQs -->
+    <div class="faq-list" id="faq-list">
+      <!-- Conteúdo injetado via JS -->
+    </div>
+
+    <!-- Footer -->
+    <div class="faq-footer">
+      <div>© 2025 RM Manifest Tool <span id="app-version"></span></div>
+      <div>
+        <a href="https://github.com/psycodeliccircus/rm-manifest-tool-beta" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://renildomarcio.com.br" target="_blank" rel="noopener">Site</a>
       </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <i class="fa-solid fa-chevron-right"></i>
-          Como faço para baixar arquivos de um jogo?
-        </button>
-        <div class="faq-answer">
-          Siga estes passos simples:
-          <ol>
-            <li>Digite o <b>App ID</b> ou nome do jogo no campo de busca (ex: <code>271590</code> ou "GTA V").</li>
-            <li>Selecione o jogo correto na lista de sugestões.</li>
-            <li>Se o jogo tiver branches, escolha qual deseja.</li>
-            <li>Clique em <b>ADD</b> — os arquivos serão baixados e copiados para as pastas configuradas.</li>
-          </ol>
-          <i>Dica:</i> Você pode buscar jogos pelo nome completo ou parcial (ex: “Far Cry”, “Counter” etc.).
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <i class="fa-solid fa-chevron-right"></i>
-          Como configuro as pastas onde os arquivos serão salvos?
-        </button>
-        <div class="faq-answer">
-          Use os botões de pasta ao lado de cada campo:<br>
-          <ul>
-            <li><b>LOCALIZAÇÃO .ST/.LUA:</b> onde os arquivos .st ou .lua serão copiados.</li>
-            <li><b>LOCALIZAÇÃO DO .MANIFEST:</b> onde os arquivos .manifest vão ser salvos.</li>
-          </ul>
-          <b>Você pode escolher qualquer pasta do seu computador.</b> Se não escolher, o app usa o caminho padrão do Steam.<br>
-          <i>Dica:</i> Para restaurar para o padrão, basta apagar o campo e clicar novamente no botão de pasta.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <i class="fa-solid fa-chevron-right"></i>
-          O que significa o aviso de proteção DRM?
-        </button>
-        <div class="faq-answer">
-          Quando um AppID aparece com o aviso “possui proteção DRM”, significa que os arquivos desse jogo possuem criptografia, autenticação ou outros bloqueios feitos pela Steam.<br>
-          <b>Nesses casos:</b>
-          <ul>
-            <li>Os arquivos .manifest podem não funcionar fora do Steam.</li>
-            <li>Você pode receber erro ao tentar abrir ou usar os arquivos baixados.</li>
-            <li>Nem todos os jogos têm DRM — muitos arquivos funcionam normalmente.</li>
-          </ul>
-          <i>O app apenas alerta, mas permite o download caso você queira tentar usar por conta própria.</i>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <i class="fa-solid fa-chevron-right"></i>
-          Estou recebendo erro 404 ou “Branch não encontrado”. E agora?
-        </button>
-        <div class="faq-answer">
-          <b>Isso pode acontecer por:</b>
-          <ul>
-            <li>AppID digitado errado (confira se é o ID certo do jogo na Steam).</li>
-            <li>O branch escolhido não existe ou está vazio (ex: “beta”, “experimental” etc).</li>
-            <li>O jogo ainda não foi adicionado ao servidor ou não tem manifest público.</li>
-          </ul>
-          <i>Solução:</i> Verifique o AppID, tente trocar o branch para “public” e confira se o jogo está disponível na Steam.<br>
-          Se persistir, <a href="https://generator.renildomarcio.com.br/requests/index.php" target="_blank">mande um pedido de suporte</a>.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <i class="fa-solid fa-chevron-right"></i>
-          Como atualizo meus arquivos de forma rápida?
-        </button>
-        <div class="faq-answer">
-          Clique em <b>ATUALIZAR TUDO</b> para o app buscar os manifests mais recentes para o AppID selecionado e baixar novamente, substituindo os antigos.<br>
-          <i>Importante:</i> Só funciona para branch “public” ou jogos suportados. Se não houver arquivos novos, será avisado!
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <i class="fa-solid fa-chevron-right"></i>
-          Como o app atualiza para uma nova versão?
-        </button>
-        <div class="faq-answer">
-          Sempre que você abrir o app, ele verifica se existe uma versão nova:<br>
-          <ul>
-            <li>Se houver, baixa e instala automaticamente — você só precisa aguardar o carregamento inicial (splash).</li>
-            <li>Se não houver, o app abre normalmente.</li>
-          </ul>
-          Não é necessário baixar manualmente do site, só aguardar a atualização automática.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <i class="fa-solid fa-chevron-right"></i>
-          Não consegui reiniciar o Steam, e agora?
-        </button>
-        <div class="faq-answer">
-          O botão <b>REINICIE STEAM</b> tenta fechar e reabrir o Steam para você automaticamente, detectando o sistema operacional (Windows, Linux, Mac).<br>
-          <b>Se não funcionar:</b>
-          <ul>
-            <li>No Windows: será solicitado para você escolher o Steam.exe manualmente.</li>
-            <li>Em outros sistemas: feche e abra o Steam manualmente.</li>
-          </ul>
-          Se o Steam não iniciar, reinicie seu computador.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <i class="fa-solid fa-chevron-right"></i>
-          Posso usar o RM Manifest Tool com segurança? Algum risco?
-        </button>
-        <div class="faq-answer">
-          Sim, o app é seguro! O código é aberto e <b>nenhuma informação pessoal ou conta Steam é coletada</b>.<br>
-          O app só lê e grava arquivos locais, conforme os caminhos que você escolheu.<br>
-          <i>Mas atenção:</i> Sempre baixe o app pelo site ou GitHub oficial para evitar versões falsas!
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <i class="fa-solid fa-chevron-right"></i>
-          Preciso ter a Steam instalada? Preciso estar online?
-        </button>
-        <div class="faq-answer">
-          <ul>
-            <li><b>Steam instalada:</b> Não é obrigatório, mas recomendado para facilitar os caminhos de arquivos.</li>
-            <li><b>Internet:</b> Sim, você precisa estar online para baixar manifests, atualizar e buscar jogos.</li>
-            <li>O app pode funcionar offline para consultar arquivos já baixados anteriormente.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <i class="fa-solid fa-chevron-right"></i>
-          Onde peço suporte, sugestões ou relatar bugs?
-        </button>
-        <div class="faq-answer">
-          Você pode:
-          <ul>
-            <li>Enviar um <a href="https://generator.renildomarcio.com.br/requests/index.php" target="_blank">pedido de suporte</a> diretamente ao desenvolvedor.</li>
-            <li>Criar uma <a href="https://github.com/psycodeliccircus/rm-manifest-tool-beta/issues" target="_blank">issue no GitHub</a> com sugestões ou bugs.</li>
-            <li>Verificar atualizações e novidades no <a href="https://github.com/psycodeliccircus/rm-manifest-tool-beta" target="_blank">repositório oficial</a>.</li>
-          </ul>
-          Dê seu feedback, é muito importante!
-        </div>
-      </div>
-
     </div>
   </div>
 
   <script>
-    // Expande/recolhe FAQ
-    document.querySelectorAll('.faq-question').forEach(btn =>
-      btn.addEventListener('click', () =>
-        btn.parentElement.classList.toggle('open')
-      )
-    );
+    // Carrega FAQs de faqs.json
+    fetch('faqs.json')
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('last-updated').textContent =
+          new Date(data.updated).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric' });
+
+        const list = document.getElementById('faq-list');
+        data.faqs.forEach(faq => {
+          const d = document.createElement('details');
+          d.innerHTML = `
+            <summary>${faq.question}</summary>
+            <div class="faq-answer">${faq.answer}</div>
+          `;
+          list.appendChild(d);
+        });
+      })
+      .catch(console.error);
+
+    // Busca interna
+    document.getElementById('faq-search').addEventListener('input', e => {
+      const term = e.target.value.toLowerCase();
+      document.querySelectorAll('#faq-list details').forEach(d => {
+        const txt = d.querySelector('summary').textContent.toLowerCase();
+        d.style.display = txt.includes(term) ? '' : 'none';
+      });
+    });
+
+    // Versão via IPC
+    window.electronAPI.getAppVersion().then(v => {
+      document.getElementById('app-version').textContent = 'v' + v;
+    });
   </script>
 </body>
 </html>

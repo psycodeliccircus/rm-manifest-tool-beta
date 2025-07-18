@@ -1,0 +1,169 @@
+{
+  "updated": "2025-07-18T17:45:00Z",
+  "faqs": [
+    {
+      "question": "O que é o RM Manifest Tool e por que utilizá-lo?",
+      "answer": "O RM Manifest Tool é uma aplicação cross-platform (Windows, Linux, macOS) que automatiza o download e a organização de arquivos <strong>.manifest</strong> e <strong>.lua/.st</strong> de jogos Steam. Com ele você ganha:<ul><li>Velocidade: baixa rapidamente sem usar SteamCMD;</li><li>Praticidade: salva em pastas customizáveis;</li><li>Atualização simplificada: um clique para manter tudo em dia;</li><li>Flexibilidade: suporte a branches públicos, beta e experimentais.</li></ul>"
+    },
+    {
+      "question": "Como faço para baixar os arquivos de um jogo?",
+      "answer": "1. Insira o AppID ou parte do nome do jogo;<br>2. Selecione o título correto na lista suspensa;<br>3. Escolha o branch desejado (public, beta, experimental);<br>4. Clique em <strong>ADD</strong> e aguarde o download e a cópia automática para as pastas configuradas."
+    },
+    {
+      "question": "O que significa o alerta de DRM?",
+      "answer": "Esse alerta indica que o jogo possui proteção digital (DRM), o que pode impedir o uso dos manifests fora do cliente Steam. Mesmo assim, você ainda pode tentar baixar e testar manualmente."
+    },
+    {
+      "question": "Está aparecendo erro “Branch não encontrado” ou 404. O que devo fazer?",
+      "answer": "Verifique se:<ul><li>O AppID está correto;</li><li>O branch selecionado existe e contém arquivos;</li><li>O jogo tem manifest público disponível.</li></ul>Se o problema persistir, abra um chamado em <a href=\"https://generator.renildomarcio.com.br/requests/index.php\" target=\"_blank\">Suporte RM</a>."
+    },
+    {
+      "question": "Como atualizar todos os arquivos de um AppID de uma só vez?",
+      "answer": "Selecione o AppID e clique em <strong>ATUALIZAR TUDO</strong>. O app vai comparar com os manifests mais recentes e baixar apenas o que estiver desatualizado, substituindo automaticamente."
+    },
+    {
+      "question": "Como o RM Manifest Tool se mantém na versão mais recente?",
+      "answer": "Ao iniciar, o app verifica atualizações no servidor:<ul><li>Se houver nova versão, baixa e instala em background;</li><li>Se estiver atualizado, carrega imediatamente.</li></ul>Você não precisa baixar manualmente."
+    },
+    {
+      "question": "O botão “Reiniciar Steam” não funcionou. E agora?",
+      "answer": "O recurso tenta fechar e reabrir o cliente automaticamente:<ul><li>No Windows, pode solicitar o caminho do Steam.exe;</li><li>No Linux/macOS, informe o executável se necessário.</li></ul>Se ainda não funcionar, reinicie seu sistema e tente novamente."
+    },
+    {
+      "question": "Posso usar o RM Manifest Tool com segurança?",
+      "answer": "Sim. O código é open-source e não coleta informações de conta Steam. Ele apenas lê e grava arquivos locais nos diretórios que você escolher. Sempre baixe da fonte oficial para evitar versões não autorizadas."
+    },
+    {
+      "question": "Preciso ter o Steam instalado e conexão ativa?",
+      "answer": "Não é obrigatório ter o Steam instalado, mas facilita a localização de pastas padrão. É necessário estar online para buscar e baixar manifests e atualizações. Em modo offline, você pode acessar apenas arquivos já baixados."
+    },
+    {
+      "question": "Onde posso reportar bugs ou enviar sugestões?",
+      "answer": "Você pode:<ul><li>Abrir um chamado via <a href=\"https://generator.renildomarcio.com.br/requests/index.php\" target=\"_blank\">Suporte RM</a>;</li><li>Registrar uma issue em <a href=\"https://github.com/renildomarcio/rm-manifest-tool/issues\" target=\"_blank\">GitHub</a>;</li><li>Contribuir e acompanhar o desenvolvimento no repositório oficial.</li></ul>"
+    },
+    {
+      "question": "Como faço para incluir arquivos de DLC no download?",
+      "answer": "Marque a opção <strong>Incluir DLC</strong> antes de clicar em <strong>ADD</strong>. O app identificará as DLCs associadas ao AppID e fará o download automático dos manifests e scripts correspondentes."
+    },
+    {
+      "question": "É possível extrair manifests de jogos que não estão mais disponíveis na Steam?",
+      "answer": "Sim, desde que haja um manifest público armazenado no servidor do RM Manifest Tool. Caso contrário, o app retornará um erro indicando indisponibilidade."
+    },
+    {
+      "question": "Posso usar proxy ou VPN para o download?",
+      "answer": "Atualmente não há configuração interna de proxy no app. Se seu SO estiver configurado para usar proxy/VPN, o app seguirá essas regras automaticamente."
+    },
+    {
+      "question": "Onde encontro os registros de log e erros?",
+      "answer": "Os logs do aplicativo ficam em:<br><code>%APPDATA%/RMManifestTool/logs</code> (Windows)<br><code>~/.config/RMManifestTool/logs</code> (Linux/macOS). Verifique os arquivos <em>latest.log</em> para detalhes."
+    },
+    {
+      "question": "Existe integração com linha de comando?",
+      "answer": "Sim. A partir da versão 1.2.0, você pode usar:<br><code>rmmanifesttool --appid 271590 --branch public --download</code><br>Consulte a documentação no GitHub para opções avançadas."
+    },
+    {
+      "question": "Como limpar o cache de manifests antigos?",
+      "answer": "Use o comando <strong>Limpar Cache</strong> no menu de configurações do app ou exclua manualmente a pasta:<br><code>%LOCALAPPDATA%/RMManifestTool/cache</code>."
+    },
+    {
+      "question": "Como verificar integridade dos arquivos baixados?",
+      "answer": "Após o download, clique em <strong>Verificar Integridade</strong> no menu de contexto do AppID. O app validará checksums dos manifests e reportará inconsistências."
+    },
+    {
+      "question": "Como desativar notificações de alerta no app?",
+      "answer": "Vá em <strong>Configurações → Notificações</strong> e desmarque a opção de alertas. As notificações na bandeja e pop‑ups serão silenciadas."
+    },
+    {
+      "question": "Posso armazenar arquivos em pastas de rede (NAS)?",
+      "answer": "Sim, basta apontar o caminho de destino para uma unidade de rede mapeada. Certifique‑se de ter permissões de leitura/escrita adequadas."
+    },
+    {
+      "question": "O que é o branch experimental e quando devo usá‑lo?",
+      "answer": "O branch experimental contém versões de teste recente. Use‑o para acessar correções ou recursos em desenvolvimento, mas esteja ciente de maior instabilidade."
+    },
+    {
+      "question": "É possível baixar múltiplos AppIDs simultaneamente?",
+      "answer": "No momento, o app processa um AppID por vez. Para múltiplos, execute operações sequenciais ou utilize a integração CLI em scripts."
+    },
+    {
+      "question": "Como exportar a lista de arquivos em CSV?",
+      "answer": "No menu de contexto do AppID, selecione <strong>Exportar CSV</strong>. O app irá gerar um arquivo .csv com colunas: nome, extensão, data do manifest e branch."
+    },
+    {
+      "question": "O app possui modo portátil (portable)?",
+      "answer": "Sim. Baixe a versão <em>portable</em> no GitHub. Basta descompactar o executável em uma pasta e executá‑lo sem instalação."
+    },
+    {
+      "question": "Posso alterar o tema da interface (claro/escuro)?",
+      "answer": "Em Configurações → Tema, escolha entre <em>Escuro</em> ou <em>Claro</em>. A seleção é aplicada imediatamente."
+    },
+    {
+      "question": "Como filtrar arquivos por extensão na lista?",
+      "answer": "Use o campo de filtro acima da lista de arquivos (no painel principal) e digite a extensão desejada, por exemplo <code>.lua</code> ou <code>.manifest</code>."
+    },
+    {
+      "question": "O app memoriza os últimos AppIDs usados?",
+      "answer": "Sim. No campo de busca, os últimos 10 AppIDs pesquisados aparecem como sugestões automáticas ao focar."
+    },
+    {
+      "question": "Como personalizar o diretório de trabalho do app?",
+      "answer": "Em Configurações → Diretórios, você pode definir pastas separadas para <strong>.lua/.st</strong> e <strong>.manifest</strong>, além de diretório de logs e cache."
+    },
+    {
+      "question": "É possível usar o RM Manifest Tool em scripts automatizados?",
+      "answer": "Sim, via CLI. Exemplos:<br><code>rmmanifesttool --appid 271590 --branch beta --download</code><br>Combine em scripts Bash/PowerShell para automação completa."
+    },
+    {
+      "question": "O RM Manifest Tool suporta ARM (Raspberry Pi, Apple Silicon)?",
+      "answer": "Sim, existem builds pré-compilados para ARM64. Baixe a versão adequada no GitHub e execute como em outras plataformas."
+    },
+    {
+      "question": "A aplicação oferece suporte a múltiplos idiomas?",
+      "answer": "Sim. O app detecta o idioma do sistema ou permite escolher em Configurações → Idioma: Português, Inglês, Espanhol e outros em desenvolvimento."
+    },
+    {
+      "question": "Como restaurar todas as configurações aos valores padrão?",
+      "answer": "Em Configurações → Avançado, clique em <strong>Restaurar Padrões</strong>. Todas as pastas e preferências voltarão ao estado inicial."
+    },
+    {
+      "question": "Existem atalhos de teclado para ações rápidas?",
+      "answer": "Sim. Pressione <code>Ctrl+R</code> para atualizar, <code>Ctrl+F</code> para focar a busca e <code>Ctrl+L</code> para limpar o cache."
+    },
+    {
+      "question": "Como evitar bloqueios de firewall durante download?",
+      "answer": "Abra a porta 443/TCP (HTTPS) no seu firewall ou adicione o executável do app à lista de permitidos. VPNs corporativas podem requerer proxy."
+    },
+    {
+      "question": "O que fazer se a conexão falhar durante o download?",
+      "answer": "Se ocorrer erro de rede, verifique sua conexão e tente novamente. O app retoma downloads pendentes ao reiniciar o processo."
+    },
+    {
+      "question": "Posso exportar um relatório de uso do app?",
+      "answer": "Sim. Em Configurações → Relatórios, clique em <strong>Exportar Relatório</strong> para gerar um JSON ou CSV com estatísticas de downloads e tempo de uso."
+    },
+    {
+      "question": "Como integrar o RM Manifest Tool em pipelines CI/CD?",
+      "answer": "Use a CLI dentro de seus pipelines (Jenkins, GitHub Actions etc.) para baixar manifests antes de builds. Exemplo no GitHub Actions:<br><code>run: rmmanifesttool --appid ${{ secrets.APPID }} --branch public --download</code>"
+    },
+    {
+      "question": "Como alterar o nível de log para debug ou verbose?",
+      "answer": "Em Configurações → Logs, selecione o nível desejado (info, debug, verbose). Os logs serão gerados com mais detalhes para diagnóstico."
+    },
+    {
+      "question": "Existe backup automático das configurações?",
+      "answer": "Sim. O app salva uma cópia de segurança das configurações a cada atualização. Você pode restaurar versões anteriores em Configurações → Avançado → Restaurar Backup."
+    },
+    {
+      "question": "Como resolver conflitos entre manifest local e remoto?",
+      "answer": "Ao detectar conflito, o app exibirá opções:<ul><li>Manter versão local;</li><li>Substituir pela remota;</li><li>Comparar diff antes de decidir.</li></ul>"
+    },
+    {
+      "question": "É possível renomear em lote seus arquivos baixados?",
+      "answer": "Sim. Na lista de arquivos, selecione múltiplos itens e escolha 'Renomear em Lote'. Defina padrão de nome ou prefixo/sufixo."
+    },
+    {
+      "question": "Como comparar diferenças entre duas versões de manifest?",
+      "answer": "Selecione dois manifests na lista, clique em 'Comparar Diff'. O app exibirá lado a lado as diferenças de conteúdo."
+    }
+  ]
+}

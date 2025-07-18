@@ -1,38 +1,49 @@
-/* style.css */
+/* ==========================================================================
+   style.css — Variáveis de tema, reset, componentes e responsividade
+   ========================================================================== */
 
-/* ========== VARIÁVEIS DE TEMA ========== */
+/* ==========================================================================
+   VARIÁVEIS DE TEMA
+   Definem cores, tipografia, bordas e tempos de transição em um único lugar
+   ========================================================================== */
 :root {
-  /* cores */
+  /* cores de fundo e degradê principal */
   --bg-gradient-start: #19202e;
   --bg-gradient-end:   #22354a;
   --card-bg:           rgba(25,33,45,0.89);
   --frost-gradient:    linear-gradient(125deg, #19202e 65%, #22354a 100%);
+  /* paleta de ações */
   --primary:           #36d6a9;
   --primary-dark:      #20a389;
   --accent:            #4be5e2;
   --danger:            #ff6464;
   --warn:              #e7bd62;
+  /* cores de texto */
   --text-main:         #fff;
   --text-muted:        #8494b0;
+  /* tipografia */
+  --font-base:         'Inter', 'Segoe UI', Arial, sans-serif;
+  --fs-base:           1rem;
+  --fs-small:          0.93rem;
+  --fs-large:          1.06rem;
+  /* bordas e raios */
   --border:            #253144b0;
+  --radius-card:       13px;
+  --radius-btn:        9px;
+  --radius-input:      8px;
+  /* sombras */
   --shadow-light:      rgba(31,215,203,0.13);
   --shadow-strong:     rgba(20,25,30,0.28);
-  /* tipografia */
-  --font-base: 'Inter', 'Segoe UI', Arial, sans-serif;
-  --fs-base: 1rem;
-  --fs-small: 0.93rem;
-  --fs-large: 1.06rem;
-  /* bordas e raios */
-  --radius-card: 13px;
-  --radius-btn: 9px;
-  --radius-input: 8px;
-  /* transições */
-  --transition-fast: 0.13s ease;
-  --transition-med: 0.17s ease;
-  --transition-slow: 0.25s ease;
+  /* tempos de transição */
+  --transition-fast:   0.13s ease;
+  --transition-med:    0.17s ease;
+  --transition-slow:   0.25s ease;
 }
 
-/* ========== RESET & GLOBAL ========== */
+/* ==========================================================================
+   RESET & GLOBAL
+   Zera margens/paddings e define box-sizing, além de regras de scroll
+   ========================================================================== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -46,19 +57,27 @@ body {
   font-size: var(--fs-base);
   overflow: hidden;
 }
-/* ========== SCROLLBARS OCULTAS, MAS SCROLL ATIVO ========== */
-html, body {
-  /* mantém oculto em Firefox e IE/Edge antigos */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 
-  /* permite rolagem vertical (auto detecta quando necessário) */
-  overflow-y: auto;
-  /* opcional: impedir rolagem horizontal */
-  overflow-x: hidden;
+/* --------------------------------------------------------------------------
+   SCROLLBARS OCULTAS, MAS SCROLL ATIVO
+   Remove barras visíveis, mantém a rolagem vertical quando necessária
+   -------------------------------------------------------------------------- */
+html, body {
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE/Edge antigos */
+  overflow-y: auto;           /* ativa rolagem vertical */
+  overflow-x: hidden;         /* impede rolagem horizontal */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
-/* ========== FUNDO GLASS/FROST ========== */
+/* ==========================================================================
+   FUNDO GLASS/FROST
+   Deixa um degradê desfoque atrás de toda a aplicação
+   ========================================================================== */
 .background-frost {
   position: fixed;
   inset: 0;
@@ -69,7 +88,10 @@ html, body {
   pointer-events: none;
 }
 
-/* ========== ANIMAÇÃO DE ENTRADA ========== */
+/* ==========================================================================
+   ANIMAÇÃO DE ENTRADA
+   Aplica efeito de deslizar para cima ao carregar
+   ========================================================================== */
 .fade-in {
   animation: slideInUp var(--transition-slow) forwards;
   opacity: 0;
@@ -79,10 +101,13 @@ html, body {
   to   { transform: translateY(0);     opacity: 1; }
 }
 
-/* ========== CONTÊINER PRINCIPAL ========== */
+/* ==========================================================================
+   CONTÊINER PRINCIPAL (.app-container)
+   Box glass central com bordas arredondadas, blur e sombras
+   ========================================================================== */
 .app-container {
   position: relative;
-  margin: 4vh auto 0 auto;
+  margin: 4vh auto 0;
   width: 90%;
   max-width: 500px;
   min-height: 90vh;
@@ -98,7 +123,10 @@ html, body {
   z-index: 1;
 }
 
-/* ========== TÍTULO ========== */
+/* ==========================================================================
+   TÍTULO DA APLICAÇÃO (.app-title, .app-logo, .badge-beta)
+   Logo + nome + badge em linha, com degradês e sombras
+   ========================================================================== */
 .app-title {
   display: flex;
   align-items: center;
@@ -113,7 +141,7 @@ html, body {
   background: linear-gradient(90deg, #193a33e6 0%, #222f41e6 100%);
   border-radius: var(--radius-card);
   box-shadow: 0 2px 14px var(--shadow-strong);
-  text-shadow: 0 1px 5px rgba(24, 58, 54, 0.5);
+  text-shadow: 0 1px 5px rgba(24,58,54,0.5);
 }
 .app-logo {
   width: 46px;
@@ -132,9 +160,7 @@ html, body {
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(54,214,233,0.44);
   background: linear-gradient(130deg,#2d2d2d 15%,#232525 54%,#1c1f24 100%);
-  color: var(--clr-accent);
   font-size: 0.9rem;
-  border-radius: 8px;
   font-weight: 600;
 }
 .badge-beta {
@@ -148,18 +174,25 @@ html, body {
   letter-spacing: 0.5px;
 }
 
-/* ========== FORMULÁRIOS & INPUTS ========== */
-.form-control, .form-select, .location-input {
+/* ==========================================================================
+   FORMULÁRIOS & INPUTS
+   Inputs, selects e checkboxes com foco destacado
+   ========================================================================== */
+.form-control,
+.form-select,
+.location-input {
   width: 100% !important;
   padding: 10px 12px;
   font-size: var(--fs-base);
-  border: 1.5px solid #29293d;
-  border-radius: var(--radius-input);
   background: #23232f;
   color: var(--text-main);
+  border: 1.5px solid #29293d;
+  border-radius: var(--radius-input);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
-.form-control:focus, .form-select:focus, .location-input:focus {
+.form-control:focus,
+.form-select:focus,
+.location-input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 2px rgba(32,163,137,0.44);
   outline: none;
@@ -179,7 +212,10 @@ html, body {
   color: #b3f3e7;
 }
 
-/* ========== BOTÕES ========== */
+/* ==========================================================================
+   BOTÕES
+   Padding, sombras, hover e active padronizados
+   ========================================================================== */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -204,10 +240,10 @@ html, body {
 .btn:hover {
   filter: brightness(1.07);
 }
-.btn-add { background: var(--primary-dark); }
-.btn-remove { background: var(--danger); }
-.btn-update { background: #406187; }
-.btn-restart { background: #47485a; }
+.btn-add    { background: var(--primary-dark); }
+.btn-remove { background: var(--danger);        }
+.btn-update { background: #406187;              }
+.btn-restart{ background: #47485a;              }
 .btn-suporte,
 .btn-faq {
   background: linear-gradient(90deg,#344875 20%,var(--accent) 95%);
@@ -217,7 +253,10 @@ html, body {
   background: linear-gradient(90deg,#26ecd7,#235687 90%);
 }
 
-/* ========== WARNINGS ========== */
+/* ==========================================================================
+   WARNINGS
+   Estilo de alerta DRM com efeito de piscar
+   ========================================================================== */
 #drm-warning {
   display: none;
   align-items: center;
@@ -237,7 +276,10 @@ html, body {
   to   { background: #2b1818; color: #f77474; }
 }
 
-/* ========== DROPDOWN MODERNO ========== */
+/* ==========================================================================
+   DROPDOWN DE BUSCA (APPID)
+   Posicionado abaixo do input, com scrollbar customizada
+   ========================================================================== */
 #appid-dropdown {
   display: none;
   position: absolute;
@@ -260,10 +302,10 @@ html, body {
   align-items: center;
   gap: 12px;
   padding: 10px 17px;
+  margin: 2px 8px;
   background: transparent;
   border: none;
   border-radius: var(--radius-input);
-  margin: 2px 8px;
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast);
   min-height: 46px;
@@ -274,13 +316,10 @@ html, body {
   outline: none;
 }
 #appid-dropdown .game-thumbnail {
-  width: 62px;
-  height: 28px;
+  width: 62px; height: 28px;
   object-fit: cover;
-  border-radius: 5px;
-  border: 1px solid #232c36;
-  background: #32334a;
-  flex-shrink: 0;
+  border-radius: 5px; border: 1px solid #232c36;
+  background: #32334a; flex-shrink: 0;
   box-shadow: 0 2px 7px #0004;
 }
 #appid-dropdown .game-info {
@@ -292,24 +331,16 @@ html, body {
 }
 #appid-dropdown .game-appid {
   color: var(--primary);
-  font-size: 1.02rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  line-height: 1.11;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 1.02rem; font-weight: 700;
+  letter-spacing: 0.5px; line-height: 1.11;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 #appid-dropdown .game-name {
   color: var(--text-main);
-  font-size: 1.04rem;
-  font-weight: 500;
-  opacity: 0.93;
-  line-height: 1.16;
-  word-break: break-word;
-  max-width: 220px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 1.04rem; font-weight: 500;
+  opacity: 0.93; line-height: 1.16;
+  word-break: break-word; max-width: 220px;
+  overflow: hidden; text-overflow: ellipsis;
 }
 #appid-dropdown .dropdown-no-results {
   padding: 14px 18px;
@@ -317,309 +348,183 @@ html, body {
   font-size: 1.04rem;
   text-align: center;
 }
-/* Scrollbar do dropdown */
 #appid-dropdown::-webkit-scrollbar {
-  width: 9px;
-  background: #1b1e25;
-  border-radius: 7px;
+  width: 9px; background: #1b1e25; border-radius: 7px;
 }
 #appid-dropdown::-webkit-scrollbar-thumb {
   background: linear-gradient(120deg,var(--primary) 10%,#233654 80%);
-  border-radius: 7px;
-  min-height: 35px;
+  border-radius: 7px; min-height: 35px;
   border: 2.5px solid #191c23;
-  box-shadow: 0 2px 8px rgba(54,214,233,0.56) inset;
+  box-shadow: inset 0 2px 8px rgba(54,214,233,0.56);
 }
 #appid-dropdown::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(120deg,#4be5e2,#406187 70%);
 }
-#appid-dropdown::-webkit-scrollbar-corner {
-  background: #181e22;
-}
+#appid-dropdown::-webkit-scrollbar-corner { background: #181e22; }
 
-/* ========== LISTA DE ARQUIVOS ========== */
+/* ==========================================================================
+   LISTA DE ARQUIVOS
+   Container, itens e scrollbar customizada
+   ========================================================================== */
 #file-list-container {
   background: #181e22;
   border-radius: 10px;
   padding: 10px;
-  margin-top: 18px;
-  margin-bottom: 10px;
+  margin-top: 18px; margin-bottom: 10px;
 }
 #file-list {
   list-style: none;
-  padding: 0;
-  margin: 0;
-  max-height: 155px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary) #181e22;
+  padding: 0; margin: 0;
+  max-height: 155px; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: var(--primary) #181e22;
 }
 #file-list::-webkit-scrollbar {
-  width: 8px;
-  background: #181e22;
-  border-radius: 7px;
+  width: 8px; background: #181e22; border-radius: 7px;
 }
 #file-list::-webkit-scrollbar-thumb {
   background: linear-gradient(120deg,var(--primary) 10%,#233654 80%);
-  border-radius: 7px;
-  min-height: 25px;
+  border-radius: 7px; min-height: 25px;
   border: 2px solid #191c23;
-  box-shadow: 0 2px 7px rgba(54,214,233,0.25) inset;
+  box-shadow: inset 0 2px 7px rgba(54,214,233,0.25);
 }
 #file-list::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(120deg,#4be5e2,#406187 80%);
 }
-#file-list::-webkit-scrollbar-corner {
-  background: #181e22;
-}
+#file-list::-webkit-scrollbar-corner { background: #181e22; }
 .file-item {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  padding: 10px 0;
-  color: #e1e1e1;
+  display: flex; align-items: center; gap: 13px;
+  padding: 10px 0; color: #e1e1e1;
   border-bottom: 1px solid #252832;
   font-size: 1.03rem;
 }
-.file-item:last-child {
-  border-bottom: none;
-}
+.file-item:last-child { border-bottom: none; }
 .file-lua .file-icon,
-.file-st .file-icon {
-  color: #a5d6a7;
-}
-.file-manifest .file-icon {
-  color: #7ebfff;
-}
-.manifest-id-current {
-  color: #73e46e;
-  font-weight: bold;
-}
-.manifest-id-outdated {
-  color: #ed4b4b;
-  font-weight: bold;
-}
-.legend-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-right: 16px;
-}
-.legend-color.legend-green {
-  background: #73e46e;
-  width: 12px;
-  height: 12px;
-  border-radius: 2px;
-  display: inline-block;
-}
-.legend-color.legend-red {
-  background: #ed4b4b;
-  width: 12px;
-  height: 12px;
-  border-radius: 2px;
-  display: inline-block;
-}
-.file-list-header {
-  margin-bottom: 6px;
-}
+.file-st  .file-icon { color: #a5d6a7; }
+.file-manifest .file-icon   { color: #7ebfff; }
+.manifest-id-current  { color: #73e46e; font-weight: bold; }
+.manifest-id-outdated { color: #ed4b4b; font-weight: bold; }
+.legend-item { display: inline-flex; align-items: center; gap: 5px; margin-right: 16px; }
+.legend-color.legend-green { background: #73e46e; width: 12px; height: 12px; border-radius: 2px; }
+.legend-color.legend-red   { background: #ed4b4b; width: 12px; height: 12px; border-radius: 2px; }
+.file-list-header { margin-bottom: 6px; }
 
-/* ========== LOCALIZAÇÃO ========== */
+/* ==========================================================================
+   LOCALIZAÇÃO DE PASTAS (.lua & .manifest)
+   ========================================================================== */
 .location-box {
   background: linear-gradient(120deg,#1d2639cc 90%,#193a33cc 100%);
   border-radius: var(--radius-card);
-  padding: 18px 16px 12px 16px;
+  padding: 18px 16px 12px;
   margin-top: 24px;
   font-size: 1.03rem;
   border: 1.5px solid #2d3b47b7;
   box-shadow: 0 6px 24px rgba(39,58,62,0.13);
 }
 .location-row {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-bottom: 11px;
+  display: flex; flex-direction: column; gap: 5px; margin-bottom: 11px;
 }
-.location-row:last-child {
-  margin-bottom: 0;
-}
+.location-row:last-child { margin-bottom: 0; }
 .location-label {
-  color: #73e46e;
-  font-size: var(--fs-small);
-  font-weight: 600;
-  letter-spacing: 0.7px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  opacity: 0.89;
-  margin-bottom: 2px;
+  display: flex; align-items: center; gap: 8px;
+  color: #73e46e; font-size: var(--fs-small); font-weight: 600; letter-spacing: 0.7px;
 }
 .location-input-group {
-  display: flex;
-  align-items: center;
-  gap: 9px;
+  display: flex; align-items: center; gap: 9px;
 }
 .location-input[readonly] {
-  background: #232b2f;
-  color: #87ede2;
-  opacity: 0.83;
-  cursor: not-allowed;
+  background: #232b2f; color: #87ede2; opacity: 0.83; cursor: not-allowed;
 }
 .choose-btn {
-  background: #1b414d;
-  color: #56d2ff;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 13px;
+  background: #1b414d; color: #56d2ff;
+  border: none; border-radius: 8px; padding: 8px 13px;
   font-size: 1.19rem;
-  transition: background var(--transition-med), color var(--transition-fast);
   box-shadow: 0 2px 7px rgba(39,64,77,0.13);
-  display: flex;
-  align-items: center;
+  transition: background var(--transition-med), color var(--transition-fast);
+  display: flex; align-items: center;
 }
 .choose-btn:hover,
-.choose-btn:focus {
-  background: #3eddbd;
-  color: var(--text-main);
-}
+.choose-btn:focus { background: #3eddbd; color: var(--text-main); }
 
-/* ========== ALERT CONTAINER & ALERTAS ========== */
+/* ==========================================================================
+   ALERTAS TOAST
+   Animação e cores por tipo
+   ========================================================================== */
 #alert-container {
-  position: fixed;
-  bottom: 34px;
-  right: 30px;
-  z-index: 12000;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 13px;
-  pointer-events: none;
+  position: fixed; bottom: 34px; right: 30px;
+  display: flex; flex-direction: column; gap: 13px;
+  pointer-events: none; z-index: 12000;
 }
 .app-alert {
-  min-width: 210px;
-  max-width: 360px;
-  background: #232a33e6;
-  color: var(--text-main);
+  display: flex; align-items: center; gap: 13px;
+  min-width: 210px; max-width: 360px;
+  background: #232a33e6; color: var(--text-main);
   border-radius: 10px;
   padding: 13px 20px 13px 15px;
   font-size: 1.02rem;
   box-shadow: 0 6px 20px rgba(21,26,35,0.38);
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  opacity: 0;
-  transform: translateY(25px) scale(0.97);
+  opacity: 0; transform: translateY(25px) scale(0.97);
   animation: alertIn 0.22s cubic-bezier(.17,.67,.6,1.32) forwards;
   pointer-events: auto;
 }
-@keyframes alertIn {
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-.app-alert-success {
-  border-left: 4px solid #2fe47b;
-}
-.app-alert-error {
-  border-left: 4px solid var(--danger);
-}
-.app-alert-info {
-  border-left: 4px solid #42bfff;
-}
-.app-alert-warning {
-  border-left: 4px solid var(--warn);
-}
+@keyframes alertIn { to { opacity: 1; transform: translateY(0) scale(1); } }
+.app-alert-success { border-left: 4px solid #2fe47b; }
+.app-alert-error   { border-left: 4px solid var(--danger); }
+.app-alert-info    { border-left: 4px solid #42bfff; }
+.app-alert-warning { border-left: 4px solid var(--warn); }
 .app-alert .close-alert {
-  background: none;
-  border: none;
-  color: #aaa;
-  font-size: 1.4rem;
-  margin-left: auto;
-  cursor: pointer;
-  opacity: 0.75;
+  background: none; border: none; color: #aaa;
+  font-size: 1.4rem; margin-left: auto; cursor: pointer; opacity: 0.75;
   transition: color var(--transition-fast), opacity var(--transition-fast);
-  pointer-events: auto;
 }
-.app-alert .close-alert:hover {
-  color: var(--text-main);
-  opacity: 1;
-}
+.app-alert .close-alert:hover { color: var(--text-main); opacity: 1; }
 
-/* ========== RESPONSIVO ========== */
+/* ==========================================================================
+   RESPONSIVO
+   Ajustes para telas menores que 550px e 380px
+   ========================================================================== */
 @media (max-width: 550px) {
-  .app-container {
-    padding: 14px 3vw 12px;
-    max-width: 99vw;
-    min-width: 0;
-    border-radius: 15px;
-  }
-  .app-title {
-    font-size: 1.06rem;
-    padding: 4px 4vw;
-  }
-  .location-box {
-    padding: 10px 2vw 7px;
-  }
-  .location-label {
-    font-size: 0.93rem;
-  }
-  .location-input {
-    font-size: 0.94rem;
-    padding: 6px 7px;
-  }
-  .choose-btn {
-    font-size: 1.07rem;
-    padding: 7px 9px;
-  }
-  .btn {
-    font-size: 0.97rem;
-    padding: 8px 0;
-  }
+  .app-container { padding: 14px 3vw 12px; max-width: 99vw; min-width: 0; border-radius: 15px; }
+  .app-title     { font-size: 1.06rem; padding: 4px 4vw; }
+  .location-box  { padding: 10px 2vw 7px; }
+  .location-label{ font-size: 0.93rem; }
+  .location-input{ font-size: 0.94rem; padding: 6px 7px; }
+  .choose-btn    { font-size: 1.07rem; padding: 7px 9px; }
+  .btn           { font-size: 0.97rem; padding: 8px 0; }
+}
+@media (max-width: 380px) {
+  .app-footer .footer-text  { font-size: 0.8rem; }
+  .app-footer .footer-links { font-size: 0.82rem; }
 }
 
-/* ========== FOOTER ========== */
+/* ==========================================================================
+   FOOTER (.app-footer)
+   Rodapé glass com links e versão do app
+   ========================================================================== */
 .app-footer {
-  margin-top: auto;              /* empurra para o fim do flex container */
-  padding: 10px 0 6px;
+  margin-top: auto; padding: 10px 0 6px;
   text-align: center;
-  background: transparent;/* vidro levemente mais escuro */
+  background: transparent;
   border-top: 1px solid rgba(37,49,68,0.6);
   backdrop-filter: blur(6px);
   border-radius: 0 0 var(--radius-card) var(--radius-card);
 }
-
 .app-footer .footer-text {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 4px;
+  font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px;
 }
-
 .app-footer .footer-links {
   font-size: 0.9rem;
 }
-
 .app-footer .footer-links a {
-  color: var(--accent);
-  text-decoration: none;
+  color: var(--accent); text-decoration: none; margin: 0 6px;
   transition: color var(--transition-fast);
-  margin: 0 6px;
 }
+.app-footer .footer-links a:hover { color: var(--primary); }
+.app-footer .separator { color: var(--text-muted); margin: 0 4px; }
 
-.app-footer .footer-links a:hover {
-  color: var(--primary);
-}
-
-.app-footer .separator {
-  color: var(--text-muted);
-  margin: 0 4px;
-}
-
-/* responsivo: reduzir fonte em telas pequenas */
-@media (max-width: 380px) {
-  .app-footer .footer-text { font-size: 0.8rem; }
-  .app-footer .footer-links { font-size: 0.82rem; }
-}
-
+/* ==========================================================================
+   VERSÃO DO APP (.app-version)
+   Exibida junto ao footer
+   ========================================================================== */
 .app-version {
   margin: 0 8px;
   color: var(--text-muted);
